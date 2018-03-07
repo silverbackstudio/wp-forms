@@ -1,0 +1,113 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Silverback Helpers\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-06 16:11+0000\n"
+"PO-Revision-Date: 2018-03-06 16:12+0000\n"
+"Last-Translator: SilverbackStudio <webmaster@silverbackstudio.it>\n"
+"Language-Team: Italian\n"
+"Language: it_IT\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Mandrill.php:35
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Mandrill.php:106
+msgid ""
+"The requesto to our mail server failed, please try again later or contact "
+"the site owner."
+msgstr ""
+"La richiesta di invio non è andata a buon fine, per favore riprova più tardi "
+"o contatta il proprietario del sito."
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Mandrill.php:165
+#, php-format
+msgid ""
+"This email address has beeing rejected for an unknown reason [%s]. Please "
+"use another email address."
+msgstr ""
+"Questo indirizzo email é stato rifiutato per un motivo sconosciuto [%s]. Per "
+"favore utilizza un altro indirizzo email."
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Marketing/Exceptions/ContactNotExists.php:13
+msgid "Contact does not exists"
+msgstr "Il contatto non esiste"
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Marketing/Exceptions/ApiKeyInvalid.php:13
+msgid "Please specify an API key"
+msgstr "Per favore specifica una chiave API"
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectRule.php:13
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailReject.php:13
+msgid ""
+"This address has beed rejected, this sometimes is due to multiple tries to "
+"send to a full or disabled inbox. Please try again later"
+msgstr ""
+"Questo indirizzo è stato rifiutato. Questo spesso avviene a causa di troppi "
+"invii consecutivi a una casella disabilitata. Per favore riprova più tardi."
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectInvalidAddress.php:13
+msgid "Your email address is invalid. Please check the address or use another."
+msgstr ""
+"Il tuo indirizzo email non è valido. Per favore controlla eventuali errori "
+"oppure utilizza un altro indirizzo."
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectHardBounce.php:13
+msgid ""
+"The mailbox is non existent or disabled. Please check your email address is "
+"correct or your contact your mailbox provider."
+msgstr ""
+"L'indirizzo di posta specificato è inesistente o non attivo. Per favore "
+"controlla che l'indirizzo sia corretto oppure contatta il tuo provider di "
+"posta."
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectSpam.php:13
+msgid ""
+"Your mailbox is reporting our message as spam. Please add our domain to "
+"trusted senders or contact the website tech support"
+msgstr ""
+"La tua casella di posta ha rilevato il nostro indirizzo come spam. Per "
+"favore aggiungi il nostro dominio nella lista dei mittenti verificati o "
+"contatta il supporto tecnico."
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectInvalidSender.php:13
+msgid "Invalid sender address."
+msgstr "Indirizzo del mittente non valido."
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectTestLimit.php:13
+msgid "The test mode sending limit is beeing reached."
+msgstr "E' stato raggiunto il limite di invio per l'account di test."
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectTestAccount.php:13
+msgid "This email address is a test account."
+msgstr "Questo indirizzo email è un account di prova."
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectSoftBounce.php:13
+msgid ""
+"Your mailbox isn't accepting our message. Please check your if mailbox your "
+"mailbox is full."
+msgstr ""
+"La tua casella di post non accetta il nostro messaggio. Per favore controlla "
+"se la tua casella è attiva ed ha spazio disponibile."
+
+#. Name of the plugin
+msgid "Silverback Email Services"
+msgstr "Silverback Email Services"
+
+#. Description of the plugin
+msgid "SilverbackStudio Mailing Classes"
+msgstr "SilverbackStudio Mailing Classes"
+
+#. URI of the plugin
+msgid "https://github.com/silverbackstudio/wp-email"
+msgstr "https://github.com/silverbackstudio/wp-email"
+
+#. Author of the plugin
+msgid "Silverback Studio"
+msgstr "Silverback Studio"
+
+#. Author URI of the plugin
+msgid "http://www.silverbackstudio.it/"
+msgstr "http://www.silverbackstudio.it/"

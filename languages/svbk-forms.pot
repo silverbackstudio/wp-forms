@@ -1,0 +1,98 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-06 16:11+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Mandrill.php:35
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Mandrill.php:106
+msgid ""
+"The requesto to our mail server failed, please try again later or contact "
+"the site owner."
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Mandrill.php:165
+#, php-format
+msgid ""
+"This email address has beeing rejected for an unknown reason [%s]. Please "
+"use another email address."
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Marketing/Exceptions/ContactNotExists.php:13
+msgid "Contact does not exists"
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Marketing/Exceptions/ApiKeyInvalid.php:13
+msgid "Please specify an API key"
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectRule.php:13
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailReject.php:13
+msgid ""
+"This address has beed rejected, this sometimes is due to multiple tries to "
+"send to a full or disabled inbox. Please try again later"
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectInvalidAddress.php:13
+msgid "Your email address is invalid. Please check the address or use another."
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectHardBounce.php:13
+msgid ""
+"The mailbox is non existent or disabled. Please check your email address is "
+"correct or your contact your mailbox provider."
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectSpam.php:13
+msgid ""
+"Your mailbox is reporting our message as spam. Please add our domain to "
+"trusted senders or contact the website tech support"
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectInvalidSender.php:13
+msgid "Invalid sender address."
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectTestLimit.php:13
+msgid "The test mode sending limit is beeing reached."
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectTestAccount.php:13
+msgid "This email address is a test account."
+msgstr ""
+
+#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectSoftBounce.php:13
+msgid ""
+"Your mailbox isn't accepting our message. Please check your if mailbox your "
+"mailbox is full."
+msgstr ""
+
+#. Name of the plugin
+msgid "Silverback Email Services"
+msgstr ""
+
+#. Description of the plugin
+msgid "SilverbackStudio Mailing Classes"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://github.com/silverbackstudio/wp-email"
+msgstr ""
+
+#. Author of the plugin
+msgid "Silverback Studio"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://www.silverbackstudio.it/"
+msgstr ""
