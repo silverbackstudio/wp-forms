@@ -8,7 +8,7 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Svbk\\WP\\Form\\": "src/"}
+        "psr-4": {"Svbk\\WP\\Forms\\": "src/"}
     },   
     "require": {
         "silverbackstudio/wp-themehelper": "^2.5.0",        
