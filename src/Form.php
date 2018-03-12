@@ -159,7 +159,7 @@ class Form {
 	}
 
 	public static function enqueue_scripts() {
-		wp_enqueue_script( 'svbk-forms', 'https://cdn.jsdelivr.net/gh/silverbackstudio/wp-forms@1/assets/js/forms.js', array( 'jquery' ), null, true );
+		wp_enqueue_script( 'svbk-forms', 'https://cdn.jsdelivr.net/gh/silverbackstudio/wp-forms@1.1/assets/js/forms.js', array( 'jquery' ), null, true );
 	}
 
 }
