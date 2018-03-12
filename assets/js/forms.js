@@ -12,7 +12,7 @@
         //reset
         $('.field-group', $form).removeClass('error');
         $('.field-group .field-errors', $form).text('');
-        $form.removeClass('response-success response-error');
+        $form.removeClass('response-success response-error response-request-error');
         $messages.empty();
 
         $form.addClass('loading');
