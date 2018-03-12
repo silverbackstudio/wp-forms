@@ -2,6 +2,8 @@
 
 namespace Svbk\WP\Forms;
 
+use Svbk\WP\Helpers;
+
 class Form {
 
 	public $index = 0;
@@ -159,7 +161,7 @@ class Form {
 	}
 
 	public static function enqueue_scripts() {
-		wp_enqueue_script( 'svbk-forms', 'https://cdn.jsdelivr.net/gh/silverbackstudio/wp-forms@1.1/assets/js/forms.js', array( 'jquery' ), null, true );
+		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', '/assets/js/forms.js', [ 'version' => '1.1', 'deps' => array('jquery') , 'source' => 'gh'  ] );
 	}
 
 }
