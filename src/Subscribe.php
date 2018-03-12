@@ -17,16 +17,18 @@ class Subscribe extends Submission {
 	public $user_template = '';
 	
 	protected function mainAction( $flags = array() ) {
-		
-		
-		
 		if ( $this->checkPolicy( 'policy_newsletter' ) && !empty( $this->marketing ) && !empty( $this->marketing_lists ) ) {
 		
 			$user = $this->getUser();
 			$user->lists = $this->marketing_lists;
 		
 			try { 
-				$this->marketing->create( $user, true );
+				$subscribed_user = $this->marketing->createContact( $user, true );
+				
+				setcookie("mktUserId", $subscribed_user, time() + 6 * MONTH_IN_SECONDS );
+				
+				do_action('svbk_forms_subscribed_user', $subscribed_user, $user, $this );
+				
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
 			}
