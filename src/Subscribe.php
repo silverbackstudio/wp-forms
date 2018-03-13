@@ -23,15 +23,20 @@ class Subscribe extends Submission {
 			$user->lists = $this->marketing_lists;
 		
 			try { 
-				$subscribed_user = $this->marketing->createContact( $user, true );
-				
-				setcookie("mktUserId", $subscribed_user, time() + 6 * MONTH_IN_SECONDS );
+				$subscribed_user = $this->marketing->createContact( $user );
 				
 				do_action('svbk_forms_subscribed_user', $subscribed_user, $user, $this );
+				
+			} catch( Email\Marketing\Exceptions\ContactAlreadyExists $e ) {
+				
+				$this->marketing->saveContact( $user );
+				do_action('svbk_forms_updated_user', $user, $this );	
 				
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
 			}
+			
+			setcookie("mktUserId", $user->uuid(), time() + 6 * MONTH_IN_SECONDS );
 		}
 
 		if( empty( $flags['disable_user_email'] ) ) {
@@ -66,6 +71,8 @@ class Subscribe extends Submission {
 			'first_name' => ucfirst( $this->getInput( 'fname' ) ),
 		]);
 		
+		$user->addAttribute('SVBK_UID', $user->uuid() );
+
 		if( $this->getInput( 'lname' ) ) {
 			$user->last_name = ucfirst( $this->getInput( 'lname' ) );
 		}		
