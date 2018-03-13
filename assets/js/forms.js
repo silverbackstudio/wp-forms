@@ -8,6 +8,16 @@
         var data = $form.serialize();
         var $messages = $('.messages ul', $form);
         var formTitle = $form.siblings('.form-title').text();
+        var formAction = $form.attr('action');
+        var formArray = $form.serializeArray();
+        
+        var dataObject = {};
+        
+        for (var i = 0; i < formArray.length; i++){
+            dataObject[formArray[i]['name']] = formArray[i]['value'];
+        }
+
+        dataLayer.push({'event': 'formSubmit', 'formAction': formAction, 'formData' : dataObject });
 
         //reset
         $('.field-group', $form).removeClass('error');
@@ -22,7 +32,7 @@
         $.ajax(
         {
             dataType: "json",
-            url: $form.attr('action'),
+            url: formAction,
             type: "POST",
             data: data,
             success: function(response){
@@ -32,39 +42,61 @@
 
                     for(var field in response.errors){
 
-                        if(!$.isNumeric(field)){
-                            $('.' + response.prefix + '-' + field + '-group', $form).addClass('error');
-                            $('.' + response.prefix + '-' + field + '-group .field-errors', $form).text(response.errors[field]);
+                        var $field_group = $('.' + response.prefix + '-' + field + '-group', $form);
+
+                        if( $field_group.length > 0 ) {
+                            $field_group.addClass('error');
+                            $('.field-errors', $field_group).text(response.errors[field]);
                         } else {
                             $messages.append('<li class="error">' + response.errors[field] + '</li>');
                         }
-
-                        dataLayer.push({'event': 'formEvent',  'formEvent': 'errorField', 'formTitle': formTitle, 'errorField': field, 'errorDescription': response.errors[field] });
+                        
+                        dataLayer.push({'event': 'formError', 'errorField': field, 'errorDescription': response.errors[field], 'formAction': formAction, 'formData' : dataObject });
+                        
                     }
 
                 } else {
                     $messages.append('<li class="success">' + response.message + '</li>');
                     $form.trigger("reset");
-                    dataLayer.push({'event': 'formEvent',  'formEvent': 'success', 'formTitle': formTitle});
                 }
-
+                
                 $form.removeClass('loading');
 
-                if(response.redirect){
-                    window.location.href = response.redirect;
-                }
+                var submitTimeout = setTimeout(
+                        function(){ 
+                            if( response.redirect ){
+                                window.location.href = response.redirect; 
+                            }
+                        }
+                    , 3000);
+
+                dataLayer.push({
+                    'event': 'formSubmitted', 
+                    'formResult': response.status, 
+                    'formResponse': response, 
+                    'formAction': formAction, 
+                    'formData' : dataObject,
+                    'eventCallback' : function() {
+                        
+                        clearTimeout(submitTimeout);
+
+                        if ( response.redirect ){
+                            window.location.href = response.redirect;
+                        }
+                    }                    
+                });
+
             },
             error: function(response){
                 $form.addClass('response-request-error');
                 $messages.append('<li class="error">Request Error</li>');
-                dataLayer.push({'event': 'formEvent',  'formEvent': 'requestError', 'formTitle': formTitle});
+                dataLayer.push({'event': 'formRequestError', 'errorDescription': response, 'formAction': formAction, 'formData' : dataObject});
 
                 $form.removeClass('loading');
             }
         }
         );
         e.preventDefault();
-        dataLayer.push({'event': 'formEvent',  'formEvent': 'submit', 'formTitle': formTitle});
     });
 
     $('.policy-flags-open').on('click', function(e){

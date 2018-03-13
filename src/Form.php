@@ -161,7 +161,7 @@ class Form {
 	}
 
 	public static function enqueue_scripts() {
-		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '1.1', 'deps' => array('jquery') , 'source' => 'gh'  ] );
+		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '1.2', 'deps' => array('jquery') , 'source' => 'gh'  ] );
 	}
 
 }
