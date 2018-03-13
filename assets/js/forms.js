@@ -9,15 +9,8 @@
         var $messages = $('.messages ul', $form);
         var formTitle = $form.siblings('.form-title').text();
         var formAction = $form.attr('action');
-        var formArray = $form.serializeArray();
-        
-        var dataObject = {};
-        
-        for (var i = 0; i < formArray.length; i++){
-            dataObject[formArray[i]['name']] = formArray[i]['value'];
-        }
 
-        dataLayer.push({'event': 'formSubmit', 'formAction': formAction, 'formData' : dataObject });
+        dataLayer.push({'event': 'formSubmit', 'formAction': formAction });
 
         //reset
         $('.field-group', $form).removeClass('error');
@@ -51,7 +44,7 @@
                             $messages.append('<li class="error">' + response.errors[field] + '</li>');
                         }
                         
-                        dataLayer.push({'event': 'formError', 'errorField': field, 'errorDescription': response.errors[field], 'formAction': formAction, 'formData' : dataObject });
+                        dataLayer.push({'event': 'formError', 'errorField': field, 'errorDescription': response.errors[field], 'formAction': formAction });
                         
                     }
 
@@ -75,9 +68,7 @@
                     'formResult': response.status, 
                     'formResponse': response, 
                     'formAction': formAction, 
-                    'formData' : dataObject,
                     'eventCallback' : function() {
-                        
                         clearTimeout(submitTimeout);
 
                         if ( response.redirect ){
@@ -90,7 +81,7 @@
             error: function(response){
                 $form.addClass('response-request-error');
                 $messages.append('<li class="error">Request Error</li>');
-                dataLayer.push({'event': 'formRequestError', 'errorDescription': response, 'formAction': formAction, 'formData' : dataObject});
+                dataLayer.push({'event': 'formRequestError', 'errorDescription': response, 'formAction': formAction});
 
                 $form.removeClass('loading');
             }
