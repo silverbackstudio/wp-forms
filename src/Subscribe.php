@@ -37,6 +37,7 @@ class Subscribe extends Submission {
 			}
 			
 			setcookie("mktUserId", $user->uuid(), time() + 6 * MONTH_IN_SECONDS );
+			setcookie("mktUser", base64_encode( $user->email ), time() + 6 * MONTH_IN_SECONDS );
 		}
 
 		if( empty( $flags['disable_user_email'] ) ) {
