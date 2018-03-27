@@ -79,10 +79,10 @@ class Contact extends Subscribe {
 			$email->text_body = $this->getInput('request');
 			$email->html_body = '<p>' . $this->getInput('request') .  '</p>';
 			
-			if( $email->from ) {
+			if( !$email->from ) {
 				$email->from = new Email\Contact(
 					[
-						'email' => $_SERVER['SERVER_ADMIN'] ?: 'webmaster@silverbackstudio.it',
+						'email' => get_bloginfo('admin_email'),
 						'first_name' => 'Website Admin',
 					]				
 				);

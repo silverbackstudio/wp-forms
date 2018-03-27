@@ -2,6 +2,8 @@
 
 namespace Svbk\WP\Forms;
 
+use Svbk\WP\Helpers;
+
 class Form {
 
 	public $index = 0;
@@ -156,6 +158,10 @@ class Form {
 		$output .= '</div>';
 
 		return $output;
+	}
+
+	public static function enqueue_scripts() {
+		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '1.2', 'deps' => array('jquery') , 'source' => 'gh'  ] );
 	}
 
 }
