@@ -18,8 +18,6 @@ class Subscribe extends Submission {
 	
 	protected function mainAction( $flags = array() ) {
 		
-		
-		
 		if ( $this->checkPolicy( 'policy_newsletter' ) && !empty( $this->marketing ) && !empty( $this->marketing_lists ) ) {
 		
 			$user = $this->getUser();
