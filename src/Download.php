@@ -71,10 +71,9 @@ class Download extends Subscribe {
 	
 	}
 
+	public function renderParts( $attr = array() ) {
 
-	public function renderParts( $action, $attr = array() ) {
-
-		$output = parent::renderParts( $action, $attr );
+		$output = parent::renderParts( $attr );
 		$output['input']['file'] = '<input type="hidden" name="' . $this->fieldName( 'fid' ) . '" value="' . $attr['file'] . '" >';
 
 		return $output;

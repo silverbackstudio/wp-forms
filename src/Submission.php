@@ -23,7 +23,9 @@ class Submission extends Form {
 	public static $next_index = 1;
 	public $index = 0;
 
-	public function __construct() {
+	public function __construct( $properties = array() ) {
+
+		parent::__construct( $properties );
 
 		$this->index = self::$next_index++;
 
@@ -110,7 +112,19 @@ class Submission extends Form {
 		}
 
 	}
+	
+	public function submitUrl() {
 
+		return home_url(
+			add_query_arg(
+				array(
+					'svbkSubmit' => $this->action,
+				)
+			)
+		);
+
+	}	
+	
 	public function getInput( $field = null ) {
 		
 		if (null === $field){
@@ -228,13 +242,13 @@ class Submission extends Form {
 		return $text;
 	}
 
-	public function renderParts( $action, $attr = array() ) {
+	public function renderParts( $attr = array() ) {
 
 		$output = array();
 
 		$form_id = $this->field_prefix . self::PREFIX_SEPARATOR . $this->index;
 
-		$output['formBegin'] = '<form class="svbk-form" action="' . esc_url( $this->submitUrl . '#' . $form_id ) . '" id="' . esc_attr( $form_id ) . '" method="POST">';
+		$output['formBegin'] = '<form class="svbk-form" action="' . esc_url( $this->submitUrl() . '#' . $form_id ) . '" id="' . esc_attr( $form_id ) . '" method="POST">';
 
 		foreach ( $this->inputFields as $fieldName => $fieldAttr ) {
 			$output['input'][ $fieldName ] = $this->renderField( $fieldName, $fieldAttr );

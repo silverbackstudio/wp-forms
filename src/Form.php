@@ -12,9 +12,31 @@ class Form {
 	public $field_prefix = 'frm';
 	public $antispam_timeout = 0;
 
+	public static $defaults = array();
+	
 	public $errors = array();
 
 	const PREFIX_SEPARATOR = '-';
+
+	public function __construct( $properties = array() ) {
+		self::configure( $this, array_merge( Form::$defaults, $properties ) );
+	}
+
+	protected static function configure( &$target, $properties ) {
+		
+		foreach ( $properties as $property => $value ) {
+			if ( ! property_exists( $target, $property ) ) {
+				continue;
+			}
+
+			if ( is_array( $target->$property ) ) {
+				$target->$property = array_merge( $target->$property, (array)$value );
+			} else {
+				$target->$property = $value;
+			}
+		}
+		
+	}
 
 	protected function addError( $error, $field = null ) {
 
@@ -24,6 +46,10 @@ class Form {
 			$this->errors[] = $error;
 		}
 
+	}
+
+	public static function setDefaults( $defaults ){
+		Form::$defaults = $defaults;
 	}
 
 	public function getErrors() {
