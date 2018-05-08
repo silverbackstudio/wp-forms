@@ -73,7 +73,7 @@ class Form {
 			$input[ $field ] = $hashed_inputs[ $hashed_field_name ];
 		}
 
-		return $input;
+		return apply_filters('svbk_forms_input', $input, $fields, $hashed_filters, $hashed_inputs );
 	}
 
 	public function fieldName( $fieldName, $hash = true ) {

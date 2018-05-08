@@ -68,7 +68,7 @@ class Contact extends Subscribe {
 		if( $this->admin_template ) {
 	
 			try { 
-				$this->transactional->sendTemplate( $email, $this->admin_template );
+				$this->transactional->sendTemplate( apply_filters( 'svbk_forms_admin_email', $email, $this ), $this->admin_template );
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
 			}		

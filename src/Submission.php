@@ -97,6 +97,8 @@ class Submission extends Form {
 			),
 			$policyParts
 		);
+		
+		do_action( 'svbk_forms_policy_parts', $this->policyParts, $this );
 
 		return $this->policyParts;
 	}
@@ -128,10 +130,12 @@ class Submission extends Form {
 	public function getInput( $field = null ) {
 		
 		if (null === $field){
-			return $this->inputData;
+			$value = $this->inputData;
+		} else {
+			$value = isset( $this->inputData[ $field ] ) ? $this->inputData[ $field ] : null;
 		}
 		
-		return isset( $this->inputData[ $field ] ) ? $this->inputData[ $field ] : null;
+		return apply_filters( 'svbk_forms_input_value', $value );
 	}
 
 	public function processInput( $input_filters = array() ) {
@@ -193,7 +197,8 @@ class Submission extends Form {
 				}
 			}
 		}
-
+		
+		do_action( 'svbk_forms_validate', $this );
 	}
 
 	public function checkPolicy( $policyPart = 'policy_service' ) {
@@ -212,13 +217,21 @@ class Submission extends Form {
 	public function processSubmission() {
 
 		$this->processInput();
-
+		
+		do_action( 'svbk_forms_submit_before', $this );
+		
 		if ( empty( $this->errors ) && $this->checkPolicy() ) {
+			
 			$this->mainAction();
+			do_action( 'svbk_forms_submit_success', $this );
 		}
+		
+		do_action( 'svbk_forms_submit_after', $this );
 	}
 
-	protected function mainAction(){ }
+	protected function mainAction(){ 
+		
+	}
 
 	protected function privacyNotice( $attr ) {
 

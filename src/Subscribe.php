@@ -57,7 +57,7 @@ class Subscribe extends Submission {
 			$email->tags = array_merge( $email->tags, $tags, array('user-email') );
 
 			try { 
-				$this->transactional->sendTemplate( $email, $this->user_template );
+				$this->transactional->sendTemplate( apply_filters( 'svbk_forms_user_email', $email, $this ), $this->user_template );
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
 			}		
