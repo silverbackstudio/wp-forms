@@ -31,6 +31,7 @@ class Subscribe extends Submission {
 			} catch( Email\Marketing\Exceptions\ContactAlreadyExists $e ) {
 				
 				$this->marketing->saveContact( $user );
+				
 				do_action('svbk_forms_updated_user', $user, $this );	
 				
 			} catch( Exception $e ) {
@@ -78,6 +79,8 @@ class Subscribe extends Submission {
 		if( $this->getInput( 'lname' ) ) {
 			$user->last_name = ucfirst( $this->getInput( 'lname' ) );
 		}		
+		
+		do_action( 'svbk_form_user_created', $user, $this );
 		
 		return $user;
 	}
