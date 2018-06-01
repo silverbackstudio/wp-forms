@@ -5,12 +5,21 @@
     $('.svbk-form').on('submit.svbk', function(e){
 
         var $form = $(this);
-        var data = $form.serialize();
+        var formData = $form.serialize();
         var $messages = $('.messages ul', $form);
-        var formTitle = $form.siblings('.form-title').text();
-        var formAction = $form.attr('action');
+        var submitUrl = $form.attr('action');
 
-        dataLayer.push({'event': 'formSubmit', 'formAction': formAction });
+        dataLayer.push({
+            'event': 'formSubmit', 
+            'formAction': $form.data('formAction'), 
+            'formElement': $form,
+            
+            //Reset Values
+            'formResult': null, 
+            'formResponse': null,
+            'errorField': null, 
+            'errorDescription': null
+        });
 
         //reset
         $('.field-group', $form).removeClass('error');
@@ -20,14 +29,14 @@
 
         $form.addClass('loading');
 
-        data += '&ajax=1';
+        formData += '&ajax=1';
 
         $.ajax(
         {
             dataType: "json",
-            url: formAction,
+            url: submitUrl,
             type: "POST",
-            data: data,
+            data: formData,
             success: function(response){
                 $form.addClass('response-' + response.status);
 
@@ -44,7 +53,11 @@
                             $messages.append('<li class="error">' + response.errors[field] + '</li>');
                         }
                         
-                        dataLayer.push({'event': 'formError', 'errorField': field, 'errorDescription': response.errors[field], 'formAction': formAction });
+                        dataLayer.push({
+                            'event': 'formError',
+                            'errorField': field, 
+                            'errorDescription': response.errors[field]  
+                        });
                         
                     }
 
@@ -66,8 +79,7 @@
                 dataLayer.push({
                     'event': 'formSubmitted', 
                     'formResult': response.status, 
-                    'formResponse': response, 
-                    'formAction': formAction, 
+                    'formResponse': response,
                     'eventCallback' : function() {
                         clearTimeout(submitTimeout);
 
@@ -81,7 +93,7 @@
             error: function(response){
                 $form.addClass('response-request-error');
                 $messages.append('<li class="error">Request Error</li>');
-                dataLayer.push({'event': 'formRequestError', 'errorDescription': response, 'formAction': formAction});
+                dataLayer.push({'event': 'formRequestError', 'errorDescription': response});
 
                 $form.removeClass('loading');
             }
@@ -91,7 +103,6 @@
     });
 
     $('.policy-flags-open').on('click', function(e){
-        dataLayer.push({'event': 'formEvent',  'formEvent': 'policyOpen'});
         e.preventDefault();
         $( $(this).attr('href') ).slideToggle();
     });

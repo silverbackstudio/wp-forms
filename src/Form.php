@@ -4,13 +4,26 @@ namespace Svbk\WP\Forms;
 
 use Svbk\WP\Helpers;
 
+add_action( 'after_setup_theme', __NAMESPACE__ . '\\Form::load_texdomain' );
+
 class Form {
 
 	public $index = 0;
+	public static $next_index = 1;
 
 	public static $salt = 's1v2b3k4';
 	public $field_prefix = 'frm';
+	
 	public $antispam_timeout = 0;
+	
+	public $submitUrl = '';
+	public $submitButtonText = '';		
+	
+	public $inputFields = array();	
+	protected $inputData = array();
+	protected $inputErrors = array();	
+
+	public $confirmMessage = '';
 
 	public static $defaults = array();
 	
@@ -19,7 +32,19 @@ class Form {
 	const PREFIX_SEPARATOR = '-';
 
 	public function __construct( $properties = array() ) {
-		self::configure( $this, array_merge( Form::$defaults, $properties ) );
+		
+		$this->index = self::$next_index++;
+		
+		self::configure( $this, array_merge( Form::$defaults, self::$defaults, $properties ) );
+		
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'init', array( $this, 'init' ), 20 );		
+		add_action( 'init', array( $this, 'processSubmission' ), 100 );		
+		add_action( 'wp', array( $this, 'ready' ) );
+	}
+
+	public function ready(){
+		do_action( 'svbk_forms_ready', $this );
 	}
 
 	protected static function configure( &$target, $properties ) {
@@ -38,6 +63,195 @@ class Form {
 		
 	}
 
+	public function init() {
+		
+		$this->submitButtonText = $this->submitButtonText ?: __('Submit', 'svbk-forms');		
+		
+		do_action( 'svbk_forms_init', $this );
+	} 
+	
+	public static function load_texdomain() {
+		load_textdomain( 'svbk-forms', dirname( __DIR__ ) . '/languages/svbk-forms-' . get_locale() . '.mo' );
+	}	
+
+	public function addInputFields( $fields, $key = '', $position = 'after' ) {
+		$this->inputFields = Helpers\Form\Renderer::arraykeyInsert( $this->inputFields, $fields, $key, $position );
+	}
+
+	public function removeInputFields() {
+		$this->inputFields = array();
+	}
+	
+	public function removeInputField( $field ) {
+		if ( array_key_exists( $field, $this->inputFields ) ) {
+			unset( $this->inputFields[$field] );
+		}
+	}	
+
+	public function insertInputField( $fieldName, $fieldParams, $after = null ) {
+
+		if ( $after ) {
+			$this->inputFields = Helpers\Form\Renderer::arrayKeyInsert( $this->inputFields, array(
+				$fieldName => $fieldParams,
+			), $after );
+		} else {
+			$this->inputFields[ $fieldName ] = $fieldParams;
+		}
+
+	}
+	
+	public function submitUrl() {
+
+		return home_url(
+			add_query_arg(
+				array(
+					'svbkSubmit' => $this->action,
+				)
+			)
+		);
+
+	}	
+	
+	public function getInput( $field = null ) {
+		
+		if (null === $field){
+			$value = $this->inputData;
+		} else {
+			$value = isset( $this->inputData[ $field ] ) ? $this->inputData[ $field ] : null;
+		}
+		
+		return apply_filters( 'svbk_forms_input_value', $value );
+	}
+
+	protected function getField( $fieldName ) {
+
+		if ( isset( $this->inputFields[ $fieldName ] ) ) {
+			return $this->inputFields[ $fieldName ];
+		} elseif ( isset( $this->policyTerms[ $fieldName ] ) ) {
+			return $this->policyTerms[ $fieldName ];
+		} else {
+			return false;
+		}
+
+	}
+
+	protected function validateInput() {
+
+		$policyFields = array_keys( $this->policyTerms );
+
+		foreach ( $this->inputData as $name => $value ) {
+
+			$field = $this->getField( $name );
+
+			if ( ! $value && $this->fieldRequired( $field ) ) {
+				$this->addError( $this->fieldError( $field, $name ), $name );
+			}
+		}
+		
+		do_action( 'svbk_forms_validate', $this );
+	}
+
+	public function checkPolicy( $policyTerm = 'policy_service' ) {
+
+		if ( $this->getInput( 'policy_all' ) ) {
+			return true;
+		}
+
+		if ( $this->getInput( $policyTerm ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function processSubmission() {
+
+		$submitAction = filter_input( INPUT_GET, 'svbkSubmit', FILTER_SANITIZE_SPECIAL_CHARS );
+
+		if ( $submitAction !== $this->action ) {
+			return;
+		}
+
+		if( filter_input( INPUT_POST, 'ajax', FILTER_VALIDATE_BOOLEAN ) && ! defined( 'DOING_AJAX' ) ) {
+			define( 'DOING_AJAX', true );
+		}
+
+		$this->processInput();
+		$this->validateInput();
+
+		do_action( 'svbk_forms_submit_before', $this );
+		
+		if ( empty( $this->errors ) && $this->checkPolicy() ) {
+			
+			$this->mainAction();
+			
+			do_action( 'svbk_forms_submit_success', $this );
+		}
+		
+		do_action( 'svbk_forms_submit_after', $this );
+		
+		$errors = $this->getErrors();
+
+		$redirect_to = filter_input( INPUT_POST, $this->fieldName('redirect_to'), FILTER_VALIDATE_INT );
+		$redirect_url = null;
+		
+		if ( $redirect_to ) {
+			$redirect_url = get_permalink( $redirect_to );
+		}
+
+		if( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
+			@header( 'Content-Type: application/json' );
+			send_nosniff_header();
+			echo $this->formatResponse( $errors, $form, $redirect_url );
+			exit;
+		}
+
+		//self::$form_errors = $errors;
+
+		if( empty( $errors ) && $redirect_url ) {
+			wp_redirect( $redirect_url );
+			exit;
+		}		
+	}
+
+	public function formatResponse( $redirect_url = null ) {
+
+		$errors = $this->getErrors();
+
+		if ( ! empty( $errors ) ) {
+
+			return json_encode(
+				array(
+					'prefix' => $this->field_prefix,
+					'status' => 'error',
+					'errors' => $errors,
+				)
+			);
+
+		}
+
+		$response = array(
+			'prefix' => $this->field_prefix,
+			'status' => 'success',
+			'message' => $this->confirmMessage(),
+		);
+		
+		if ( $redirect_url ) {
+			$response['redirect'] = $redirect_url;
+		}
+
+		return apply_filters('svbk_forms_response', json_encode( $response ), $this );
+	}
+
+	public function confirmMessage() {
+		return $this->confirmMessage ?: __( 'Thanks for your request, we will reply as soon as possible.', 'svbk-shortcakes' );
+	}
+
+	protected function mainAction(){ 
+		do_action('svbk_forms_main_action', $this);
+	}
+
 	protected function addError( $error, $field = null ) {
 
 		if ( $field ) {
@@ -49,19 +263,42 @@ class Form {
 	}
 
 	public static function setDefaults( $defaults ){
-		Form::$defaults = $defaults;
+		self::$defaults = $defaults;
 	}
 
-	public function getErrors() {
-		return $this->errors;
+	public function getErrors( $field = '' ) {
+		
+		if( ! $field )  {
+			return $this->errors;
+		}
+		
+		if ( isset( $this->errors[ $field ] ) ) {
+			return $this->errors[ $field ];
+		} 
+		
+		return array();
 	}
 
-	public function processInput( $fields ) {
+	public function processInput( $input_filters = array() ) {
+
+		$index = filter_input( INPUT_POST, 'index', FILTER_VALIDATE_INT );
+
+		if ( $index === false ) {
+			$this->addError( __( 'Input data error', 'svbk-forms' ) );
+			return;
+		} else {
+			$this->index = $index;
+		}
+
+		$input_filters = array_merge(
+			$input_filters,
+			wp_list_pluck( $this->inputFields, 'filter' )
+		);
 
 		$hashed_fields = array();
 		$inputs = array();
 
-		foreach ( $fields as $field => $filter ) {
+		foreach ( $input_filters as $field => $filter ) {
 			$hashed_field_name = $this->fieldName( $field );
 			$hashed_filters[ $hashed_field_name ] = $filter;
 			$input[ $field ] = $hashed_field_name;
@@ -73,7 +310,7 @@ class Form {
 			$input[ $field ] = $hashed_inputs[ $hashed_field_name ];
 		}
 
-		return apply_filters('svbk_forms_input', $input, $fields, $hashed_filters, $hashed_inputs );
+		$this->inputData = apply_filters('svbk_forms_input', $input, $input_filters, $hashed_filters, $hashed_inputs );
 	}
 
 	public function fieldName( $fieldName, $hash = true ) {
@@ -98,7 +335,7 @@ class Form {
 	}
 
 	protected static function fieldError( $fieldAttr, $name = '' ) {
-		return ( isset( $fieldAttr['error'] ) ? $fieldAttr['error'] : sprintf( __( 'Empty or invalid field [%s]', 'svbk-helpers' ), $name )  );
+		return ( isset( $fieldAttr['error'] ) ? $fieldAttr['error'] : sprintf( __( 'Empty or invalid field [%s]', 'svbk-forms' ), $name )  );
 	}
 
 	public function renderField( $fieldName, $fieldAttr, $errors = array() ) {
@@ -134,17 +371,17 @@ class Form {
 		$labelElement = '<label for="' . $fieldId . '">' . $fieldLabel . '</label>';
 
 		$output = '<div class="' . esc_attr( join( ' ', $classes ) ) . '">';
-		$output .= apply_filters('svbk_form_before_field', '', $fieldName, $fieldAttr, $this);
+		$output .= apply_filters('svbk_forms_before_field', '', $fieldName, $fieldAttr, $this);
 
 		if ( 'hidden' === $type ) {
-			$output .= '<input type="' . esc_attr( $type ) . '" name="' . $fieldNameHash . '" id="' . $fieldId . '" value="' . esc_attr( $value ) . '" />';
+			$output .= '<input class="'. esc_attr($fieldClass) .'" type="' . esc_attr( $type ) . '" name="' . $fieldNameHash . '" id="' . $fieldId . '" value="' . esc_attr( $value ) . '" />';
 		} elseif ( 'checkbox' === $type ) {
-			$output .= '<input type="' . esc_attr( $type ) . '" name="' . $fieldNameHash . '" id="' . $fieldId . '" value="1" />' . $labelElement;
+			$output .= '<input class="'. esc_attr($fieldClass) .'" type="' . esc_attr( $type ) . '" name="' . $fieldNameHash . '" id="' . $fieldId . '" value="1" />' . $labelElement;
 		} elseif ( 'textarea' === $type ) {
 			$output .= $labelElement . '<textarea type="' . esc_attr( $type ) . '" name="' . $fieldNameHash . '" id="' . $fieldId . '">' . esc_html( $value ) . '</textarea>';
 		} elseif ( ('select' === $type) && ! empty( $fieldAttr['choices'] ) ) {
 			$output .= $labelElement;
-			$output .= '<select name="' . $fieldNameHash . '" id="' . $fieldId . '" >';
+			$output .= '<select class="'. esc_attr($fieldClass) .'" name="' . $fieldNameHash . '" id="' . $fieldId . '" >';
 			foreach ( $fieldAttr['choices']  as $cValue => $cLabel ) {
 				$output .= '  <option value="' . esc_attr( $cValue ) . '" ' . selected( $value, $cValue, false ) . '>' . esc_html( $cLabel ) . '</option>';
 			}
@@ -154,7 +391,7 @@ class Form {
 			$output .= '<div name="' . $fieldNameHash . '" id="' . $fieldId . '" >';
 			foreach ( $fieldAttr['choices']  as $cValue => $cLabel ) {
 				$output .= '  <div class="select field-pair">';
-				$output .= '  <input id="' . $fieldId . '_' . esc_attr( $cValue ) . '"  name="' . $fieldNameHash . '[' . $cValue . ']" type="checkbox" value="1" ' . checked( $value, $cValue, false ) . '  />';
+				$output .= '  <input class="'. esc_attr($fieldClass) .'" id="' . $fieldId . '_' . esc_attr( $cValue ) . '"  name="' . $fieldNameHash . '[' . $cValue . ']" type="checkbox" value="1" ' . checked( $value, $cValue, false ) . '  />';
 				$output .= '  <label for="' . $fieldId . '_' . esc_attr( $cValue ) . '">' . esc_html( $cLabel ) . '</label>';
 				$output .= '  </div>';
 			}
@@ -164,30 +401,60 @@ class Form {
 			$output .= '<div name="' . $fieldNameHash . '" id="' . $fieldId . '" >';
 			foreach ( $fieldAttr['choices']  as $cValue => $cLabel ) {
 				$output .= '  <div class="radio field-pair">';
-				$output .= '  <input id="' . $fieldId . '_' . esc_attr( $cValue ) . '"  name="' . $fieldNameHash . '" type="radio" value="' . esc_attr($cValue) . '" ' . selected( $value, $cValue, false ) . '  />';
+				$output .= '  <input class="'. esc_attr($fieldClass) .'" id="' . $fieldId . '_' . esc_attr( $cValue ) . '"  name="' . $fieldNameHash . '" type="radio" value="' . esc_attr($cValue) . '" ' . selected( $value, $cValue, false ) . '  />';
 				$output .= '  <label for="' . $fieldId . '_' . esc_attr( $cValue ) . '">' . esc_html( $cLabel ) . '</label>';
 				$output .= '  </div>';
 			}
 			$output .= '</div>';
 		} elseif ( 'image' === $type ) {
-			$output .= $labelElement . '<input type="file" name="' . $fieldNameHash . '" id="' . $fieldId . '" />';
+			$output .= $labelElement . '<input class="'. esc_attr($fieldClass) .'" type="file" name="' . $fieldNameHash . '" id="' . $fieldId . '" />';
 			$output .= wp_get_attachment_image( $value, 'thumb' );
 		} else {
-			$output .= $labelElement . '<input type="' . esc_attr( $type ) . '" name="' . $fieldNameHash . '" id="' . $fieldId . '" value="' . esc_attr( $value ) . '" />';
+			$output .= $labelElement . '<input class="'. esc_attr($fieldClass) .'" type="' . esc_attr( $type ) . '" name="' . $fieldNameHash . '" id="' . $fieldId . '" value="' . esc_attr( $value ) . '" />';
 		}
 
 		if ( $errors !== false ) {
 			$output .= '<span class="field-errors"></span>';
 		}
 
-		$output .= apply_filters('svbk_form_after_field', '', $fieldName, $fieldAttr, $this);
+		$output .= apply_filters('svbk_forms_after_field', '', $fieldName, $fieldAttr, $this);
 		$output .= '</div>';
 
 		return $output;
 	}
 
-	public static function enqueue_scripts() {
-		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '1.2', 'deps' => array('jquery') , 'source' => 'gh'  ] );
+	public function renderParts( $args = array() ) {
+
+		$defaults = array(
+			'submit_button_label' => $this->submitButtonText,
+		);
+		
+		$args = wp_parse_args( array_filter( $args ), $defaults );		
+
+		$output = array();
+
+		$form_id = $this->field_prefix . self::PREFIX_SEPARATOR . $this->index;
+
+		$output['formBegin'] = '<form class="svbk-form" data-form-action="' . esc_attr( $this->action ) . '" action="' . esc_url( $this->submitUrl() . '#' . $form_id ) . '" id="' . esc_attr( $form_id ) . '" method="POST">';
+
+		$inputFieldSort = wp_list_sort( $this->inputFields, 'priority', 'ASC', true );
+
+		foreach ( $inputFieldSort as $fieldName => $fieldAttr ) {
+			$output['input'][ $fieldName ] = $this->renderField( $fieldName, $fieldAttr );
+		}
+
+		$output['requiredNotice'] = '<div class="required-notice">' . __( 'Required fields', 'svbk-forms' ) . '</div>';
+
+		$output['input']['index']  = '<input type="hidden" name="index" value="' . $this->index . '" >';
+		$output['submitButton'] = '<button type="submit" name="' . $this->fieldName( 'subscribe' ) . '" class="button">' . esc_html( $args['submit_button_label'] ) . '</button>';
+		$output['messages'] = '<div class="messages"><ul></ul><div class="close"><span>' . __( 'Close', 'svbk-forms' ) . '</span></div></div>';
+		$output['formEnd'] = '</form>';
+
+		return $output;
+	}
+
+	public function enqueue_scripts() {
+	
 	}
 
 }

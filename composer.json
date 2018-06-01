@@ -11,7 +11,7 @@
         "psr-4": {"Svbk\\WP\\Forms\\": "src/"}
     },   
     "require": {
-        "silverbackstudio/wp-themehelper": "^3.0.0",        
+        "silverbackstudio/wp-themehelper": "^4.0.0",        
         "silverbackstudio/wp-email": "^1.2.0",
         "psr/log": "^1.0"
     },

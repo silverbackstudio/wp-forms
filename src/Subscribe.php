@@ -16,13 +16,29 @@ class Subscribe extends Submission {
 	public $marketing_lists = array();
 	public $user_template = '';
 	
+	public function init(){
+	
+		$this->policyTerms[ 'policy_marketing' ] = array(
+			'label' => __( 'I have read the policy and agree to the processing of my data to receive personalized promotional materials', 'svbk-forms' ),
+			'type' => 'checkbox',
+			'error' => __( 'The marketing policy must be accepted to continue', 'svbk-forms' ),
+			'priority' => 30,
+			'required' => false,
+			'filter' => self::$defaultPolicyFilter,
+		);	
+	
+		parent::init();		
+		
+	}
+	
 	protected function mainAction( $flags = array() ) {
 
-		if ( $this->checkPolicy( 'policy_newsletter' ) && !empty( $this->marketing ) && !empty( $this->marketing_lists ) ) {
+		if ( !empty( $this->marketing ) && !empty( $this->marketing_lists ) ) {
 		
 			$user = $this->getUser();
-			$user->lists = $this->marketing_lists;
-		
+			
+			do_action( 'svbk_forms_user_created', $user, $this );
+
 			try { 
 				$subscribed_user = $this->marketing->createContact( $user );
 				
@@ -38,12 +54,6 @@ class Subscribe extends Submission {
 				$this->addError( $e->getMessage() );
 			}
 			
-			setcookie("mktUserId", $user->uuid(), time() + 6 * MONTH_IN_SECONDS );
-			setcookie("mktUser", base64_encode( $user->email ), time() + 6 * MONTH_IN_SECONDS );
-		}
-
-		if( empty( $flags['disable_user_email'] ) ) {
-			$this->sendUserEmail( array('subscribe-form') );
 		}
 
 	}
@@ -74,16 +84,31 @@ class Subscribe extends Submission {
 			'first_name' => ucfirst( $this->getInput( 'fname' ) ),
 		]);
 		
-		$user->addAttribute('SVBK_UID', $user->uuid() );
-
 		if( $this->getInput( 'lname' ) ) {
 			$user->last_name = ucfirst( $this->getInput( 'lname' ) );
 		}		
 		
-		do_action( 'svbk_form_user_created', $user, $this );
+		$user->addAttribute('SVBK_UID', $user->uuid() );
+		$user->addAttribute('LANGUAGE', get_bloginfo('language') );
+		
+		$user->lists = $this->marketing_lists;
+		
+		if ( $this->checkPolicy('policy_marketing') ) {
+			$user->addAttribute('OPTIN_MARKETING', 1 );	
+			$user->addAttribute('OPTIN_MARKETING_DATE', date('c') );
+		}
+		
+		if ( $this->checkPolicy('policy_marketing') && $this->attributionParams ) {
+			
+			$utm_params = filter_input_array ( INPUT_POST, array_fill_keys( array_values( $this->attributionParams ), FILTER_SANITIZE_SPECIAL_CHARS ) );
+
+			foreach( $utm_params as $utm_param => $utm_value ) {
+				$user->addAttribute( $utm_param, $utm_value );
+			}
+		}		
 		
 		return $user;
-	}
+	}	
 	
 	protected function getEmail(){
 		

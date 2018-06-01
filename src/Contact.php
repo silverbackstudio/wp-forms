@@ -14,23 +14,28 @@ class Contact extends Subscribe {
 	
 	public $recipient;
 
-	public function setInputFields( $fields = array() ) {
+	public function init() {
 
-		return parent::setInputFields(
-			array_merge(
-				array(
-					'request' => array(
-						'required' => true,
-						'label' => __( 'Message', 'svbk-helpers' ),
-						'type' => 'textarea',
-						'filter' => FILTER_SANITIZE_SPECIAL_CHARS,
-						'error' => __( 'Please write a brief description of your request', 'svbk-helpers' ),
-					),
-				),
-				$fields
-			)
+		$this->inputFields[ 'request' ] = array(
+			'required' => true,
+			'label' => __( 'Message', 'svbk-forms' ),
+			'type' => 'textarea',
+			'filter' => FILTER_SANITIZE_SPECIAL_CHARS,
+			'error' => __( 'Please write a brief description of your request', 'svbk-forms' ),
+			'priority' => 30,
 		);
+		
+		$this->policyTerms[ 'policy_newsletter' ] = array(
+			'label' => __( 'I have read the Policy and agree to periodically receive informative material', 'svbk-forms' ),
+			'required' => false,
+			'error' => __( 'The newsletter policy must be accepted to continue', 'svbk-forms' ),
+			'priority' => 20,
+			'type' => 'checkbox',
+			'filter' => self::$defaultPolicyFilter,
+		);		
 
+		parent::init();
+		
 	}
 
 	protected function mainAction( $flags = array() ) {
@@ -38,8 +43,8 @@ class Contact extends Subscribe {
 		$this->sendAdminEmail( array('contact-form') );
 		$this->sendUserEmail( array('contact-form') );			
 
-		if ( empty( $this->errors ) ){
-			parent::mainAction( array( 'disable_user_email' => true ) );
+		if ( $this->checkPolicy('policy_newsletter') ){
+			parent::mainAction( $flags );
 		} 
 		
 	}
@@ -47,7 +52,7 @@ class Contact extends Subscribe {
 	protected function sendAdminEmail( $tags = array() ){
 		
 		if( !$this->transactional ) {
-			$this->addError( __( 'Unable to send email, please contact the website owner', 'svbk-helpers' ) );
+			$this->addError( __( 'Unable to send email, please contact the website owner', 'svbk-forms' ) );
 			return;
 		}
 		
@@ -75,7 +80,7 @@ class Contact extends Subscribe {
 			
 		} else {
 			
-			$email->subject = $this->admin_subject ?: __('Contact Request (no-template)', 'svbk-helpers');
+			$email->subject = $this->admin_subject ?: __('Contact Request (no-template)', 'svbk-forms');
 			$email->text_body = $this->getInput('request');
 			$email->html_body = '<p>' . $this->getInput('request') .  '</p>';
 			
