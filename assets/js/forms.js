@@ -121,7 +121,9 @@
     });
 
     $('.svbk-form .messages').on('click', '.close', function(){
-        $(this).closest('.svbk-form').removeClass('response-success response-error');
+        var $form = $(this).closest('.svbk-form');
+        $form.removeClass('response-success response-error response-request-error');
+        $form.find('.messages ul').empty();
     });
 
 })(jQuery);
