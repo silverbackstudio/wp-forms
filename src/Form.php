@@ -4,7 +4,7 @@ namespace Svbk\WP\Forms;
 
 use Svbk\WP\Helpers;
 
-add_action( 'after_setup_theme', __NAMESPACE__ . '\\Form::load_texdomain' );
+add_action( 'after_setup_theme', __NAMESPACE__ . '\\Form::load_texdomain', 15 );
 
 class Form {
 
