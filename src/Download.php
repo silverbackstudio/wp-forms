@@ -52,10 +52,10 @@ class Download extends Subscribe {
 	
 	protected function mainAction( $flags = array() ) {
 
-		$this->sendUserEmail( array('download-form') );		
-
 		if ( $this->checkPolicy('policy_newsletter') ) {
 			parent::mainAction( $flags );
+		} else {
+			$this->sendUserEmail( array('download-form') );
 		}
 
 	}	

@@ -41,11 +41,12 @@ class Contact extends Subscribe {
 	protected function mainAction( $flags = array() ) {
 		
 		$this->sendAdminEmail( array('contact-form') );
-		$this->sendUserEmail( array('contact-form') );			
 
 		if ( $this->checkPolicy('policy_newsletter') ){
 			parent::mainAction( $flags );
-		} 
+		} else {
+			$this->sendUserEmail( array('contact-form') );
+		}
 		
 	}
 

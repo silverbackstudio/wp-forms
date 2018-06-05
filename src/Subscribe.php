@@ -33,6 +33,8 @@ class Subscribe extends Submission {
 	
 	protected function mainAction( $flags = array() ) {
 
+		$this->sendUserEmail();		
+
 		if ( !empty( $this->marketing ) && !empty( $this->marketing_lists ) ) {
 		
 			$user = $this->getUser();

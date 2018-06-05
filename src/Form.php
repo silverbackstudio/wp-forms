@@ -203,7 +203,7 @@ class Form {
 			@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 			@header( 'Content-Type: application/json' );
 			send_nosniff_header();
-			echo $this->formatResponse( $errors, $form, $redirect_url );
+			echo $this->formatResponse( $errors, $this, $redirect_url );
 			exit;
 		}
 
