@@ -72,25 +72,36 @@ class Submission extends Form {
 
 		parent::validateInput();
 	
-		if ( ! $this->policyFlagAll ) {
-			return;
-		}
-	
-		$policyFields = array_keys( $this->policyTerms );
+		foreach ( $this->policyTerms as $term => $field ) {
 
-		foreach( $policyFields as $policyField) {
-			$errors = $this->getErrors( $policyField );
+			$value = $this->getInput( $term );
 
-			if ( !empty( $errors ) ) {
-				foreach( $errors as $error ) {
-					$this->addError( $error, 'policy_all' );
-				}
-			}			
-		}
-		
+			if ( ! $value && $this->fieldRequired( $field ) ) {
+				$this->addError( $this->fieldError( $field, $term ), $term );
+
+				if ( ! $this->policyFlagAll ) {
+					$this->addError( $this->fieldError( $field, $term ), 'policy_all' );
+				}				
+				
+				$this->log( 'debug', 'Form error in field {form}.{field}: {error}', array( 'field' => $term, 'error' => $this->fieldError( $field, $term ) ) ); 
+			}
+			
+			if ( $value && $this->getInput('email') ) {
+				$this->log( 'info', 'Form policy accepted for {email}', array( 'term' => $term, 'email' => $this->getInput('email') ) ); 
+			} 
+		}	
+
 	}	
 	
+	public function checkPolicy( $policyTerm = 'policy_service' ) {
+		
+		if ( $this->getInput( $policyTerm ) ) {
+			return true;
+		}
 
+		return false;
+	}	
+	
 	public function processInput( $input_filters = array() ) {
 
 
@@ -107,6 +118,17 @@ class Submission extends Form {
 
 	}
 
+	protected function getField( $fieldName ) {
+
+		$field = parent::getField( $fieldName );
+
+		if ( ( false === $field ) && isset( $this->policyTerms[ $fieldName ] ) ) {
+			$field = $this->policyTerms[ $fieldName ];
+		} 
+		
+		return $field;
+	}	
+	
 	public function privacyButton( $privacy_link = '' ) {
 		
 		$privacy_link = apply_filters( 'svbk_forms_privacy_link', $privacy_link );

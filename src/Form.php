@@ -27,6 +27,8 @@ class Form {
 
 	public static $defaults = array();
 	
+	public $action = 'svbk_submission';	
+	
 	public $errors = array();
 
 	const PREFIX_SEPARATOR = '-';
@@ -127,8 +129,6 @@ class Form {
 
 		if ( isset( $this->inputFields[ $fieldName ] ) ) {
 			return $this->inputFields[ $fieldName ];
-		} elseif ( isset( $this->policyTerms[ $fieldName ] ) ) {
-			return $this->policyTerms[ $fieldName ];
 		} else {
 			return false;
 		}
@@ -137,33 +137,19 @@ class Form {
 
 	protected function validateInput() {
 
-		$policyFields = array_keys( $this->policyTerms );
+		foreach ( $this->inputFields as $name => $field ) {
 
-		foreach ( $this->inputData as $name => $value ) {
-
-			$field = $this->getField( $name );
+			$value = $this->getInput( $name );
 
 			if ( ! $value && $this->fieldRequired( $field ) ) {
 				$this->addError( $this->fieldError( $field, $name ), $name );
+				$this->log( 'debug', 'Form error in field {form}.{field}: {error}', array( 'field' => $name, 'error' => $this->fieldError( $field, $name ) ) ); 
 			}
 		}
 		
 		do_action( 'svbk_forms_validate', $this );
 	}
-
-	public function checkPolicy( $policyTerm = 'policy_service' ) {
-
-		if ( $this->getInput( 'policy_all' ) ) {
-			return true;
-		}
-
-		if ( $this->getInput( $policyTerm ) ) {
-			return true;
-		}
-
-		return false;
-	}
-
+	
 	public function processSubmission() {
 
 		$submitAction = filter_input( INPUT_GET, 'svbkSubmit', FILTER_SANITIZE_SPECIAL_CHARS );
@@ -176,12 +162,14 @@ class Form {
 			define( 'DOING_AJAX', true );
 		}
 
+		$this->log( 'debug', 'Form <{form}> submitted', array( 'input' => $this->getInput() ) ); 
+
 		$this->processInput();
 		$this->validateInput();
 
 		do_action( 'svbk_forms_submit_before', $this );
-		
-		if ( empty( $this->errors ) && $this->checkPolicy() ) {
+
+		if ( empty( $this->errors ) ) {
 			
 			$this->mainAction();
 			
@@ -190,8 +178,6 @@ class Form {
 		
 		do_action( 'svbk_forms_submit_after', $this );
 		
-		$errors = $this->getErrors();
-
 		$redirect_to = filter_input( INPUT_POST, $this->fieldName('redirect_to'), FILTER_VALIDATE_INT );
 		$redirect_url = null;
 		
@@ -203,13 +189,13 @@ class Form {
 			@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 			@header( 'Content-Type: application/json' );
 			send_nosniff_header();
-			echo $this->formatResponse( $errors, $this, $redirect_url );
+			echo $this->formatResponse( $redirect_url );
 			exit;
 		}
 
 		//self::$form_errors = $errors;
 
-		if( empty( $errors ) && $redirect_url ) {
+		if( empty( $this->errors ) && $redirect_url ) {
 			wp_redirect( $redirect_url );
 			exit;
 		}		
@@ -455,6 +441,10 @@ class Form {
 
 	public function enqueue_scripts() {
 	
+	}
+	
+	public function log( $level, $message, $context = [] ) {
+		do_action( 'log', $level, $message, array_merge( array( 'component' => 'wp-forms', 'form' => $this->action ), $context ) );
 	}
 
 }

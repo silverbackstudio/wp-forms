@@ -69,12 +69,15 @@ class Download extends Subscribe {
 		
 		if( !$this->transactional ) {
 			$this->addError( __( 'Unable to send email, please contact the website owner', 'svbk-forms' ) );
+			$this->log( 'critical', 'Missing transactional setting in Download form' );
 			return;
 		}
 		
 		$tags = array( 'download-request' );		
 		
 		if( !$this->user_template ) {
+			
+			$this->log( 'warning', 'Missing user template for form: {form}' );
 
 			$email = $thia->getEmail();
 			$email->subject = $this->admin_subject ?: __('Contact Request (no-template)', 'svbk-forms');
@@ -85,10 +88,13 @@ class Download extends Subscribe {
 			$email->html_body = '<p>' . $body .  '</p>';
 			$email->tags = array_merge( $email->tags, $tags, array('user-email') );	
 			
-			if( $email->from ) {
+			if( ! $email->from ) {
+				
+				$this->log( 'warning', 'Missing from address for form {form}, using wordpress default' );
+				
 				$email->from = new Email\Contact(
 					[
-						'email' => $_SERVER['SERVER_ADMIN'] ?: 'webmaster@silverbackstudio.it',
+						'email' => get_bloginfo( 'admin_email' ),
 						'first_name' => 'Website Admin',
 					]				
 				);
@@ -98,6 +104,7 @@ class Download extends Subscribe {
 				$this->transactional->send( $email );
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
+				$this->log( 'error', 'Form user email send error: {error}', array( 'error' => $e->getMessage() ) );
 			}		
 			
 		} else {
@@ -122,6 +129,7 @@ class Download extends Subscribe {
 
 		if ( ! $post || ('attachment' != $post->post_type) ) {
 			$this->addError( __( 'The specified download doesn\'t exists anymore. Please contact site owner', 'svbk-forms' ) );
+			$this->log( 'error', 'The download file specified in Download form isn\'t available', array( 'file_id' => $this->getInput( 'fid' ) ) );
 		}
 
 	}

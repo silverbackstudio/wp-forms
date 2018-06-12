@@ -45,15 +45,14 @@ class Subscribe extends Submission {
 				$subscribed_user = $this->marketing->createContact( $user );
 				
 				do_action('svbk_forms_subscribed_user', $subscribed_user, $user, $this );
-				
 			} catch( Email\Marketing\Exceptions\ContactAlreadyExists $e ) {
 				
 				$this->marketing->saveContact( $user );
 				
-				do_action('svbk_forms_updated_user', $user, $this );	
-				
+				do_action('svbk_forms_updated_user', $user, $this );
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
+				$this->log( 'error', 'Error in subscribing form user to marketing: {error}', array( 'error' => $e->getMessage() ) );
 			}
 			
 		}
@@ -73,6 +72,7 @@ class Subscribe extends Submission {
 				$this->transactional->sendTemplate( apply_filters( 'svbk_forms_user_email', $email, $this ), $this->user_template );
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
+				$this->log( 'error', 'Error in sending form user email: {error}', array( 'error' => $e->getMessage(), 'template' => $this->user_template ) );
 			}		
 			
 		}		

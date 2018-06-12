@@ -54,6 +54,7 @@ class Contact extends Subscribe {
 		
 		if( !$this->transactional ) {
 			$this->addError( __( 'Unable to send email, please contact the website owner', 'svbk-forms' ) );
+			$this->log( 'warning', 'Missing transactional handler in form {form}' );
 			return;
 		}
 		
@@ -77,9 +78,11 @@ class Contact extends Subscribe {
 				$this->transactional->sendTemplate( apply_filters( 'svbk_forms_admin_email', $email, $this ), $this->admin_template );
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
+				$this->log( 'error', 'Error in sending admin email: {error}', array( 'error' => $e->getMessage(), 'template' => $this->admin_template ) );
 			}		
 			
 		} else {
+			$this->log( 'warning', 'Missing admin template for form: {form}' );
 			
 			$email->subject = $this->admin_subject ?: __('Contact Request (no-template)', 'svbk-forms');
 			$email->text_body = $this->getInput('request');
@@ -98,6 +101,7 @@ class Contact extends Subscribe {
 				$this->transactional->send( $email );
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
+				$this->log( 'error', 'Error in sending text admin email: {error}', array( 'error' => $e->getMessage() ) );
 			}			
 			
 		}		
