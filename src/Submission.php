@@ -129,21 +129,15 @@ class Submission extends Form {
 		return $field;
 	}	
 	
-	public function privacyButton( $privacy_link = '' ) {
+	public function privacyButton() {
 		
-		$privacy_link = apply_filters( 'svbk_forms_privacy_link', $privacy_link );
-		
-		$label = __( 'Privacy policy', 'svbk-forms' );
-		
-		if ( $privacy_link ) {
-			$privacyButton = sprintf( __( '<a href="%1$s" target="_blank">%2$s</a>', 'svbk-forms' ), $privacy_link, $label );
-		} elseif ( shortcode_exists( 'privacy-link' ) ) {
-			$privacyButton = do_shortcode( sprintf( '[privacy-link]%s[/privacy-link]', $label ) );			
-		} else {
-			$privacyButton = $label;
+		if( function_exists('get_the_privacy_policy_link') ) {
+			$policy_link = get_the_privacy_policy_link();
+		} else{
+			$policy_link = __('Privacy Policy', 'svbk-forms');
 		}
 		
-		return apply_filters( 'svbk_forms_privacy_button', $privacyButton, $privacy_link );
+		return apply_filters( 'svbk_forms_privacy_link', $policy_link, $this );
 	}
 
 	public function renderParts( $args = array() ) {
