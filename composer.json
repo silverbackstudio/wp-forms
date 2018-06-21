@@ -1,6 +1,6 @@
 {
-    "name": "silverbackstudio/wp-forms",
-    "type": "library",
+    "name": "silverback/wp-forms",
+    "type": "wordpress-muplugin",
     "authors": [
         {
             "name": "Brando Meniconi",
