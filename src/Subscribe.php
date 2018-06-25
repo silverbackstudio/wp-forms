@@ -3,6 +3,7 @@ namespace Svbk\WP\Forms;
 
 use Exception;
 use Svbk\WP\Email;
+use Svbk\WP\Helpers\Networking\IpAddress;
 
 class Subscribe extends Submission {
 
@@ -94,10 +95,15 @@ class Subscribe extends Submission {
 		$user->addAttribute('LANGUAGE', get_bloginfo('language') );
 		
 		$user->lists = $this->marketing_lists;
+
+		$user->addAttribute('OPTIN_NEWSLETTER', 1 );	
+		$user->addAttribute('OPTIN_NEWSLETTER_DATE', date('c') );
+		$user->addAttribute('OPTIN_NEWSLETTER_IP', sha1( IpAddress::getClientAddress() ) );		
 		
 		if ( $this->checkPolicy('policy_marketing') ) {
 			$user->addAttribute('OPTIN_MARKETING', 1 );	
 			$user->addAttribute('OPTIN_MARKETING_DATE', date('c') );
+			$user->addAttribute('OPTIN_MARKETING_IP', IpAddress::getClientAddress() );					
 		}
 		
 		if ( $this->checkPolicy('policy_marketing') && $this->attributionParams ) {
