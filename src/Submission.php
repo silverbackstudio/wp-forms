@@ -85,7 +85,7 @@ class Submission extends Form {
 			if ( ! $value && $this->fieldRequired( $field ) ) {
 				$this->addError( $this->fieldError( $field, $term ), $term );
 
-				if ( ! $this->policyFlagAll ) {
+				if ( $this->policyFlagAll ) {
 					$this->addError( $this->fieldError( $field, $term ), 'policy_all' );
 				}				
 				
