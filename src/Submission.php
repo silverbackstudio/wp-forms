@@ -167,6 +167,7 @@ class Submission extends Form {
 			$output['policy']['global'] = $this->renderField( 'policy_all', array(
 					'label' => do_shortcode( apply_filters('svbk_forms_policy_all_text', $policy_all_text, $policy_all_toogle_text, $policyFlagsId, $this ) ),
 					'type' => 'checkbox',
+					'required' => true,
 					'class' => 'policy-flags-all',
 				)
 			);
