@@ -2,71 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Silverback Helpers\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-27 14:21+0000\n"
-"PO-Revision-Date: 2018-06-27 14:28+0000\n"
+"POT-Creation-Date: 2018-06-27 14:27+0000\n"
+"PO-Revision-Date: 2018-06-27 16:43+0000\n"
 "Last-Translator: SilverbackStudio <webmaster@silverbackstudio.it>\n"
-"Language-Team: Italian\n"
-"Language: it-IT\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
+"Language-Team: Italiano\n"
+"Language: it_IT\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco - https://localise.biz/"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:30
-msgid ""
-"<b>[privacy-controller-name]</b> will process your information to respond to "
-"your request."
-msgstr ""
-"<b>[privacy-controller-name]</b> tratterà i tuoi dati per rispondere alla "
-"tua richiesta"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:31
-msgid ""
-"You can unsubscribe at any time by clicking on the link at the bottom of "
-"each email."
-msgstr ""
-"Puoi opporti al trattamento in qualsiasi momento cliccando sul link in calce "
-"in fondo ad ogni email"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:32
-msgid ""
-"I declare I have read and accept the [privacy-policy-link] and consent to "
-"receive personalized promotional informations."
-msgstr ""
-"Ho letto la [privacy-policy-link] ed acconsento a ricevere informazioni "
-"promozionali personalizzate\n"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:33
-#, php-format
-msgid "To select partial consents %s"
-msgstr "Per selezionare i consensi parzialmente %s"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:34
-msgid "I have read and agree to the [privacy-policy-link]"
-msgstr "Ho letto e accetto la [privacy-policy-link]"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:163
-msgid "click here"
-msgstr "clicca qui"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Subscribe.php:23
-msgid ""
-"I have read the [privacy-policy-link] and agree to the processing of my data "
-"to receive personalized promotional materials based on my browsing data."
-msgstr ""
-"Ho letto l’informativa [privacy-policy-link] e acconsento al trattamento dei "
-"miei dati per ricevere informazioni promozionali personalizzate sulla base "
-"dei miei dati di navigazione"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:21
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:17
-msgid ""
-"I have read the [privacy-policy-link] and agree to the processing of my data "
-"to receive informative material"
-msgstr ""
-"Ho letto la [privacy-policy-link] e acconsento al trattamento dei miei dati "
-"per ricevere materiale informativo"
+"X-Generator: Loco https://localise.biz/"
 
 #: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:70
 msgid "Submit"
@@ -93,6 +38,39 @@ msgstr "Campi obbligatori"
 msgid "Close"
 msgstr "Chiudi"
 
+#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:30
+msgid ""
+"<b>[privacy-controller-name]</b> will process your information to respond to "
+"your request."
+msgstr ""
+"<b>[privacy-controller-name]</b> tratterà i tuoi dati per rispondere alla "
+"tua richiesta"
+
+#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:31
+msgid ""
+"You can unsubscribe at any time by clicking on the link at the bottom of "
+"each email."
+msgstr ""
+"Puoi opporti al trattamento in qualsiasi momento cliccando sul link in calce "
+"in fondo ad ogni email"
+
+#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:32
+msgid ""
+"I have read and accept the [privacy-policy-link] and agree to receive "
+"personalized promotional informations."
+msgstr ""
+"Ho letto la [privacy-policy-link] ed acconsento a ricevere informazioni "
+"promozionali personalizzate\n"
+
+#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:33
+#, php-format
+msgid "To select partial consents %s"
+msgstr "Per selezionare i consensi parzialmente %s"
+
+#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:34
+msgid "I have read and agree to the [privacy-policy-link]"
+msgstr "Ho letto e accetto la [privacy-policy-link]"
+
 #: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:50
 msgid "First Name"
 msgstr "Nome"
@@ -113,9 +91,31 @@ msgstr "Indirizzo e-mail non valido"
 msgid "Privacy Policy terms must be accepted"
 msgstr "L'informativa sulla privacy deve essere accettata"
 
+#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:163
+msgid "click here"
+msgstr "clicca qui"
+
+#: ../../../../vendor/silverbackstudio/wp-forms/src/Subscribe.php:23
+msgid ""
+"I have read the [privacy-policy-link] and agree to the processing of my data "
+"to receive personalized promotional materials based on my browsing data."
+msgstr ""
+"Ho letto l’informativa [privacy-policy-link] e acconsento al trattamento dei "
+"miei dati per ricevere informazioni promozionali personalizzate sulla base "
+"dei miei dati di navigazione"
+
 #: ../../../../vendor/silverbackstudio/wp-forms/src/Subscribe.php:25
 msgid "The marketing policy must be accepted to continue"
 msgstr "Il consenso sui materiali promozionali è necessario per proseguire"
+
+#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:21
+#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:17
+msgid ""
+"I have read the [privacy-policy-link] and agree to the processing of my data "
+"to receive informative material"
+msgstr ""
+"Ho letto la [privacy-policy-link] e acconsento al trattamento dei miei dati "
+"per ricevere materiale informativo"
 
 #: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:25
 msgid "Message"
