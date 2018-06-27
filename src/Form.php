@@ -231,7 +231,7 @@ class Form {
 	}
 
 	public function confirmMessage() {
-		return $this->confirmMessage ?: __( 'Thanks for your request, we will reply as soon as possible.', 'svbk-shortcakes' );
+		return $this->confirmMessage ?: __( 'Thanks for your request, we will reply as soon as possible.', 'svbk-forms' );
 	}
 
 	protected function mainAction(){ 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-21 14:13+0000\n"
+"POT-Creation-Date: 2018-06-27 07:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -13,6 +13,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
+
+#: src/Form.php:70
+msgid "Submit"
+msgstr ""
+
+#: src/Form.php:234
+msgid "Thanks for your request, we will reply as soon as possible."
+msgstr ""
+
+#: src/Form.php:273
+msgid "Input data error"
+msgstr ""
+
+#: src/Form.php:324
+#, php-format
+msgid "Empty or invalid field [%s]"
+msgstr ""
+
+#: src/Form.php:432
+msgid "Required fields"
+msgstr ""
+
+#: src/Form.php:436
+msgid "Close"
+msgstr ""
 
 #: src/Submission.php:28
 msgid ""
@@ -65,16 +90,6 @@ msgid ""
 "promotional informations."
 msgstr ""
 
-#: src/Subscribe.php:22
-msgid ""
-"I have read the policy and agree to the processing of my data to receive "
-"personalized promotional materials"
-msgstr ""
-
-#: src/Subscribe.php:24
-msgid "The marketing policy must be accepted to continue"
-msgstr ""
-
 #: src/Download.php:15 src/Contact.php:29
 msgid ""
 "I have read the Policy and agree to periodically receive informative material"
@@ -103,25 +118,14 @@ msgid ""
 "The specified download doesn't exists anymore. Please contact site owner"
 msgstr ""
 
-#: src/Form.php:70
-msgid "Submit"
+#: src/Subscribe.php:23
+msgid ""
+"I have read the policy and agree to the processing of my data to receive "
+"personalized promotional materials"
 msgstr ""
 
-#: src/Form.php:273
-msgid "Input data error"
-msgstr ""
-
-#: src/Form.php:324
-#, php-format
-msgid "Empty or invalid field [%s]"
-msgstr ""
-
-#: src/Form.php:432
-msgid "Required fields"
-msgstr ""
-
-#: src/Form.php:436
-msgid "Close"
+#: src/Subscribe.php:25
+msgid "The marketing policy must be accepted to continue"
 msgstr ""
 
 #: src/Contact.php:21

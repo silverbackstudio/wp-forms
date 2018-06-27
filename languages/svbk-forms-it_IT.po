@@ -2,16 +2,41 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Silverback Helpers\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-21 14:13+0000\n"
-"PO-Revision-Date: 2018-06-21 14:13+0000\n"
+"POT-Creation-Date: 2018-06-27 07:57+0000\n"
+"PO-Revision-Date: 2018-06-27 07:58+0000\n"
 "Last-Translator: SilverbackStudio <webmaster@silverbackstudio.it>\n"
-"Language-Team: Italian\n"
+"Language-Team: Italiano\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
+
+#: src/Form.php:70
+msgid "Submit"
+msgstr "Invia"
+
+#: src/Form.php:234
+msgid "Thanks for your request, we will reply as soon as possible."
+msgstr "Grazie per la tua richiesta, risponderemo prima possibile."
+
+#: src/Form.php:273
+msgid "Input data error"
+msgstr "Errore nei dati inseriti"
+
+#: src/Form.php:324
+#, php-format
+msgid "Empty or invalid field [%s]"
+msgstr "Campo vuoto o non valido [%s]"
+
+#: src/Form.php:432
+msgid "Required fields"
+msgstr "Campi obbligatori"
+
+#: src/Form.php:436
+msgid "Close"
+msgstr "Chiudi"
 
 #: src/Submission.php:28
 msgid ""
@@ -69,19 +94,6 @@ msgstr ""
 "Ho letto l'%s ed acconsento a ricevere informazioni promozionali "
 "personalizzate"
 
-#: src/Subscribe.php:22
-msgid ""
-"I have read the policy and agree to the processing of my data to receive "
-"personalized promotional materials"
-msgstr ""
-"Ho letto l’informativa e acconsento al trattamento dei miei dati per i "
-"ricevere informazioni promozionali personalizzate sulla base dei miei dati  "
-"di navigazione"
-
-#: src/Subscribe.php:24
-msgid "The marketing policy must be accepted to continue"
-msgstr "Il consenso sui materiali promozionali è necessario per proseguire"
-
 #: src/Download.php:15 src/Contact.php:29
 msgid ""
 "I have read the Policy and agree to periodically receive informative material"
@@ -114,26 +126,18 @@ msgstr ""
 "Il download richiesto non è più disponibile, contattate il proprietario del "
 "sito per maggiori informazioni."
 
-#: src/Form.php:70
-msgid "Submit"
-msgstr "Invia"
+#: src/Subscribe.php:23
+msgid ""
+"I have read the policy and agree to the processing of my data to receive "
+"personalized promotional materials"
+msgstr ""
+"Ho letto l’informativa e acconsento al trattamento dei miei dati per i "
+"ricevere informazioni promozionali personalizzate sulla base dei miei dati  "
+"di navigazione"
 
-#: src/Form.php:273
-msgid "Input data error"
-msgstr "Errore nei dati inseriti"
-
-#: src/Form.php:324
-#, php-format
-msgid "Empty or invalid field [%s]"
-msgstr "Campo vuoto o non valido [%s]"
-
-#: src/Form.php:432
-msgid "Required fields"
-msgstr "Campi obbligatori"
-
-#: src/Form.php:436
-msgid "Close"
-msgstr "Chiudi"
+#: src/Subscribe.php:25
+msgid "The marketing policy must be accepted to continue"
+msgstr "Il consenso sui materiali promozionali è necessario per proseguire"
 
 #: src/Contact.php:21
 msgid "Message"
