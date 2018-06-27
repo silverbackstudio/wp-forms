@@ -7,12 +7,17 @@ use Svbk\WP\Email;
 class Download extends Subscribe {
 
 	public $field_prefix = 'dl';
+	
+	public $policyNewsletter = '';
+	
 	public $action = 'svbk_download';
 
 	public function init() {
 
+		$this->policyNewsletter = $this->policyNewsletter ?: __( 'I have read the [privacy-policy-link] and agree to the processing of my data to receive informative material', 'svbk-forms' );
+
 		$this->policyTerms[ 'policy_newsletter' ] = array(
-			'label' => __( 'I have read the Policy and agree to periodically receive informative material', 'svbk-forms' ),
+			'label' => do_shortcode( $this->policyNewsletter ),
 			'required' => false,
 			'error' => __( 'The newsletter policy must be accepted to continue', 'svbk-forms' ),
 			'priority' => 20,

@@ -20,7 +20,7 @@ class Subscribe extends Submission {
 	public function init(){
 	
 		$this->policyTerms[ 'policy_marketing' ] = array(
-			'label' => __( 'I have read the policy and agree to the processing of my data to receive personalized promotional materials', 'svbk-forms' ),
+			'label' => do_shortcode( __( 'I have read the [privacy-policy-link] and agree to the processing of my data to receive personalized promotional materials based on my browsing data.', 'svbk-forms' ) ),
 			'type' => 'checkbox',
 			'error' => __( 'The marketing policy must be accepted to continue', 'svbk-forms' ),
 			'priority' => 30,

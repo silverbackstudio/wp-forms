@@ -18,14 +18,20 @@ class Submission extends Form {
 	public $policyService = '';
 	public $policyTerms = array();
 	public $policyFlagAll = false;
-	
-	public $attributionParams = array();
+	public $policyAllText = '';
+	public $policyAllToggleText = '';	
 	
 	public $policyUnsubscribe = '';
 
+	public $attributionParams = array();
+	
 	public function init() {
 	
-		$this->policyUnsubscribe = $this->policyUnsubscribe ?: __('You can unsubscribe at any time by clicking on the link at the bottom of each email', 'svbk-forms');
+		$this->policyScope = $this->policyScope ?: __('<b>[privacy-controller-name]</b> will process your information to respond to your request.', 'svbk-forms');
+		$this->policyUnsubscribe = $this->policyUnsubscribe ?: __('You can unsubscribe at any time by clicking on the link at the bottom of each email.', 'svbk-forms');
+		$this->policyAllText = $this->policyAllText ?: __( 'I have read and accept the [privacy-policy-link] and agree to receive personalized promotional informations.', 'svbk-forms' );;
+		$this->policyAllToggleText = $this->policyAllToggleText ?: __( 'To select partial consents %s', 'svbk-forms' );
+		$this->policyService = $this->policyService ?: __( 'I have read and agree to the [privacy-policy-link]', 'svbk-forms' );
 	
 		$this->attributionParams = apply_filters( 'svbk_forms_attribution_params', array(
 		    "utm_source_field"			=> "UTM_SOURCE",
@@ -57,7 +63,7 @@ class Submission extends Form {
 		);
 		
 		$this->policyTerms['policy_service'] = array(
-			'label' => sprintf( $this->policyService ?: __( 'I have read and agree to the "%s"', 'svbk-forms' ), $this->privacyButton() ),
+			'label' => do_shortcode( $this->policyService ),
 			'required' => true,
 			'type' => 'checkbox',
 			'priority' => 10,
@@ -129,20 +135,11 @@ class Submission extends Form {
 		return $field;
 	}	
 	
-	public function privacyButton() {
-		
-		if( function_exists('get_the_privacy_policy_link') ) {
-			$policy_link = get_the_privacy_policy_link();
-		} else{
-			$policy_link = __('Privacy Policy', 'svbk-forms');
-		}
-		
-		return apply_filters( 'svbk_forms_privacy_link', $policy_link, $this );
-	}
-
 	public function renderParts( $args = array() ) {
 
 		$defaults = array(
+			'policy_all_text' => $this->policyAllText,
+			'policy_all_toggle_text' => $this->policyAllToggleText,
 			'policy_scope_text' => $this->policyScope,
 			'policy_unsubscribe_text' => $this->policyUnsubscribe,
 		);
@@ -153,27 +150,22 @@ class Submission extends Form {
 
 		$output['policy']['begin'] = '<div class="policy-agreements">';
 		
-		$privacy_policy_button = $this->privacyButton();
-		
 		if( $args['policy_scope_text']  ) {
-			$output['policy']['scope'] = '<div class="policy-scope">' . str_replace( '{{privacy-policy}}', $privacy_policy_button, $args['policy_scope_text'] ). '</div>';
+			$output['policy']['scope'] = '<div class="policy-scope">' . do_shortcode( $args['policy_scope_text'] ). '</div>';
 		}
 
 		$groupTerms = $this->policyFlagAll && (count( $this->policyTerms ) > 1);
-	
+
 		if ( $groupTerms ) {
 			
 			$policyFlagsId = 'policy-flags-' . $this->field_prefix . self::PREFIX_SEPARATOR . $this->index;
 			
-			$policy_all_toogle_text = sprintf( __( 'If you do not want to give consent for promotional activities click %s', 'svbk-forms' ),
-					'<a class="policy-flags-open disable-anchor" href="#' . esc_attr( $policyFlagsId ) . '">' . __( 'here', 'svbk-forms' ) . '</a>'
-			);
-			
-			$policy_all_text = sprintf( __( 'I declare I have read and accept the %s and consent to receive personalized promotional informations.', 'svbk-forms' ), $privacy_policy_button ) . 
-			'</label> <label class="show-policy-parts">' . $policy_all_toogle_text;
+			$policy_all_toogle = '<a class="policy-flags-open disable-anchor" href="#' . esc_attr( $policyFlagsId ) . '">' . __( 'click here', 'svbk-forms' ) . '</a>.';
+			$policy_all_toogle_text = sprintf( $args['policy_all_toggle_text'], $policy_all_toogle );
+			$policy_all_text = $args['policy_all_text'] . '</label>&nbsp;<label class="show-policy-parts">' . $policy_all_toogle_text;
 
 			$output['policy']['global'] = $this->renderField( 'policy_all', array(
-					'label' => apply_filters('svbk_forms_policy_all_text', $policy_all_text, $privacy_policy_button, $policy_all_toogle_text, $this ),
+					'label' => do_shortcode( apply_filters('svbk_forms_policy_all_text', $policy_all_text, $policy_all_toogle_text, $policyFlagsId, $this ) ),
 					'type' => 'checkbox',
 					'class' => 'policy-flags-all',
 				)
