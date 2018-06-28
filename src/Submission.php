@@ -36,7 +36,10 @@ class Submission extends Form {
 			"initial_referrer_field"    => "REFERRER",
 			"last_referrer_field"       => "LAST_REFERRER",
 			"initial_landing_page_field"=> "LANDING_PAGE",
-			"visits_field"              => "VISITS_COUNT",	
+			"visits_field"              => "VISITS_COUNT",
+			"additional_params_map" => array( 
+				'gclid' => 'GCLID' 
+			)			
 		), $this );
 	
 		$this->inputFields['fname'] = array(
