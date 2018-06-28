@@ -17,7 +17,7 @@ class Submission extends Form {
 	public $policyScope = '';
 	public $policyService = '';
 	public $policyTerms = array();
-	public $policyFlagAll = false;
+	public $policyFlagAll = true;
 	public $policyAllText = '';
 	public $policyAllToggleText = '';	
 	
