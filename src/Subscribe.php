@@ -17,10 +17,14 @@ class Subscribe extends Submission {
 	public $marketing_lists = array();
 	public $user_template = '';
 	
+	public $policyMarketing = '';
+	
 	public function init(){
+
+		$this->policyMarketing = $this->policyMarketing ?: __( 'I have read the [privacy-policy-link] and agree to the processing of my data to receive personalized promotional materials based on my browsing data.', 'svbk-forms' );
 	
 		$this->policyTerms[ 'policy_marketing' ] = array(
-			'label' => do_shortcode( __( 'I have read the [privacy-policy-link] and agree to the processing of my data to receive personalized promotional materials based on my browsing data.', 'svbk-forms' ) ),
+			'label' => do_shortcode( $this->policyMarketing ),
 			'type' => 'checkbox',
 			'error' => __( 'The marketing policy must be accepted to continue', 'svbk-forms' ),
 			'priority' => 30,
