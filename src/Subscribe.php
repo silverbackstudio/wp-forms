@@ -115,7 +115,7 @@ class Subscribe extends Submission {
 			$utm_params = filter_input_array ( INPUT_POST, array_fill_keys( array_values( $this->attributionParams ), FILTER_SANITIZE_SPECIAL_CHARS ) );
 
 			foreach( $utm_params as $utm_param => $utm_value ) {
-				$user->addAttribute( $utm_param, $utm_value );
+				$user->addAttribute( $utm_param, urldecode( $utm_value ) );
 			}
 		}		
 		
