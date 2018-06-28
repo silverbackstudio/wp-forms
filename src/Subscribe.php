@@ -110,14 +110,31 @@ class Subscribe extends Submission {
 			$user->addAttribute('OPTIN_MARKETING_IP', IpAddress::getClientAddress() );					
 		}
 		
-		if ( $this->checkPolicy('policy_marketing') && $this->attributionParams ) {
-			
-			$utm_params = filter_input_array ( INPUT_POST, array_fill_keys( array_values( $this->attributionParams ), FILTER_SANITIZE_SPECIAL_CHARS ) );
-
-			foreach( $utm_params as $utm_param => $utm_value ) {
-				$user->addAttribute( $utm_param, urldecode( $utm_value ) );
-			}
+		/**
+		 * Add attribution and conversion parameters 
+		 */
+		$attribution_params = $this->attributionParams;
+		$attribution_form_params = array();
+		
+		if ( isset( $attribution_params['additional_params_map'] ) ) {
+			$attribution_form_params = array_values( $attribution_params['additional_params_map'] );
+			unset( $attribution_params['additional_params_map'] );
 		}		
+		
+		if ( $this->checkPolicy('policy_marketing') && $attribution_params ) {
+			$attribution_form_params = 	array_merge( 
+				$attribution_form_params, 
+				array_values( $attribution_params )
+			);
+		}		
+		
+		if ( !empty( $attribution_form_params ) ) {
+			$attribution_values = filter_input_array ( INPUT_POST, array_fill_keys( $attribution_form_params, FILTER_SANITIZE_SPECIAL_CHARS ) );
+	
+			foreach( $attribution_values as $attribution_param => $attribution_value ) {
+				$user->addAttribute( $attribution_param, urldecode( $attribution_value ) );
+			}		
+		}
 		
 		return $user;
 	}	
