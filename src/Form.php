@@ -74,7 +74,7 @@ class Form {
 	}	
 
 	public function addInputFields( $fields, $key = '', $position = 'after' ) {
-		$this->inputFields = Helpers\Form\Renderer::arraykeyInsert( $this->inputFields, $fields, $key, $position );
+		$this->inputFields = Renderer::arraykeyInsert( $this->inputFields, $fields, $key, $position );
 	}
 
 	public function removeInputFields() {
@@ -90,7 +90,7 @@ class Form {
 	public function insertInputField( $fieldName, $fieldParams, $after = null ) {
 
 		if ( $after ) {
-			$this->inputFields = Helpers\Form\Renderer::arrayKeyInsert( $this->inputFields, array(
+			$this->inputFields = Renderer::arrayKeyInsert( $this->inputFields, array(
 				$fieldName => $fieldParams,
 			), $after );
 		} else {
