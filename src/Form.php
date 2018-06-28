@@ -11,10 +11,7 @@ class Form {
 	public $index = 0;
 	public static $next_index = 1;
 
-	public static $salt = 's1v2b3k4';
 	public $field_prefix = 'frm';
-	
-	public $antispam_timeout = 0;
 	
 	public $submitUrl = '';
 	public $submitButtonText = '';		
@@ -36,7 +33,7 @@ class Form {
 	public function __construct( $properties = array() ) {
 		
 		$this->index = self::$next_index++;
-		
+
 		self::configure( $this, array_merge( Form::$defaults, self::$defaults, $properties ) );
 		
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -77,7 +74,7 @@ class Form {
 	}	
 
 	public function addInputFields( $fields, $key = '', $position = 'after' ) {
-		$this->inputFields = Helpers\Form\Renderer::arraykeyInsert( $this->inputFields, $fields, $key, $position );
+		$this->inputFields = Renderer::arraykeyInsert( $this->inputFields, $fields, $key, $position );
 	}
 
 	public function removeInputFields() {
@@ -93,7 +90,7 @@ class Form {
 	public function insertInputField( $fieldName, $fieldParams, $after = null ) {
 
 		if ( $after ) {
-			$this->inputFields = Helpers\Form\Renderer::arrayKeyInsert( $this->inputFields, array(
+			$this->inputFields = Renderer::arrayKeyInsert( $this->inputFields, array(
 				$fieldName => $fieldParams,
 			), $after );
 		} else {
@@ -231,7 +228,7 @@ class Form {
 	}
 
 	public function confirmMessage() {
-		return $this->confirmMessage ?: __( 'Thanks for your request, we will reply as soon as possible.', 'svbk-shortcakes' );
+		return $this->confirmMessage ?: __( 'Thanks for your request, we will reply as soon as possible.', 'svbk-forms' );
 	}
 
 	protected function mainAction(){ 
@@ -307,13 +304,7 @@ class Form {
 			return $this->field_prefix . '_' . $clearText;
 		}
 
-		$clearText .= self::$salt;
-
-		if ( $this->antispam_timeout > 0 ) {
-			$clearText .= round( time() / ( $this->antispam_timeout * MINUTE_IN_SECONDS * 2 ) );
-		}
-
-		return $this->field_prefix . md5( $clearText );
+		return $this->field_prefix . '_' . wp_create_nonce( $clearText, $this->action );
 	}
 
 	protected static function fieldRequired( $fieldAttr ) {

@@ -3,6 +3,7 @@ namespace Svbk\WP\Forms;
 
 use Exception;
 use Svbk\WP\Email;
+use Svbk\WP\Helpers\Networking\IpAddress;
 
 class Subscribe extends Submission {
 
@@ -16,10 +17,14 @@ class Subscribe extends Submission {
 	public $marketing_lists = array();
 	public $user_template = '';
 	
+	public $policyMarketing = '';
+	
 	public function init(){
+
+		$this->policyMarketing = $this->policyMarketing ?: __( 'I have read the [privacy-policy-link] and agree to the processing of my data to receive personalized promotional materials based on my browsing data.', 'svbk-forms' );
 	
 		$this->policyTerms[ 'policy_marketing' ] = array(
-			'label' => __( 'I have read the policy and agree to the processing of my data to receive personalized promotional materials', 'svbk-forms' ),
+			'label' => do_shortcode( $this->policyMarketing ),
 			'type' => 'checkbox',
 			'error' => __( 'The marketing policy must be accepted to continue', 'svbk-forms' ),
 			'priority' => 30,
@@ -94,10 +99,15 @@ class Subscribe extends Submission {
 		$user->addAttribute('LANGUAGE', get_bloginfo('language') );
 		
 		$user->lists = $this->marketing_lists;
+
+		$user->addAttribute('OPTIN_NEWSLETTER', 1 );	
+		$user->addAttribute('OPTIN_NEWSLETTER_DATE', date('c') );
+		$user->addAttribute('OPTIN_NEWSLETTER_IP', sha1( IpAddress::getClientAddress() ) );		
 		
 		if ( $this->checkPolicy('policy_marketing') ) {
 			$user->addAttribute('OPTIN_MARKETING', 1 );	
 			$user->addAttribute('OPTIN_MARKETING_DATE', date('c') );
+			$user->addAttribute('OPTIN_MARKETING_IP', IpAddress::getClientAddress() );					
 		}
 		
 		if ( $this->checkPolicy('policy_marketing') && $this->attributionParams ) {
@@ -105,7 +115,7 @@ class Subscribe extends Submission {
 			$utm_params = filter_input_array ( INPUT_POST, array_fill_keys( array_values( $this->attributionParams ), FILTER_SANITIZE_SPECIAL_CHARS ) );
 
 			foreach( $utm_params as $utm_param => $utm_value ) {
-				$user->addAttribute( $utm_param, $utm_value );
+				$user->addAttribute( $utm_param, urldecode( $utm_value ) );
 			}
 		}		
 		
