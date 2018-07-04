@@ -200,7 +200,7 @@ class Submission extends Form {
 	public function enqueue_scripts() {
 		wp_enqueue_script('iubenda-consent', 'https://cdn.iubenda.com/consent_solution/iubenda_cons.js');
 		
-		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '1.2', 'deps' => array( 'jquery', 'iubenda-consent' ) , 'source' => 'gh'  ] );
+		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.1', 'deps' => array( 'jquery', 'iubenda-consent' ) , 'source' => 'gh'  ] );
 		Helpers\Theme\Script::enqueue( 'silverbackstudio/utm-form', 'dest/utm_form-1.0.4.min.js', [ 'source' => 'gh', 'profiling' => true ] );
 		
 		$utm_forms_params = array_merge( 
