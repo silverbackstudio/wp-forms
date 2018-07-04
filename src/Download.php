@@ -7,10 +7,9 @@ use Svbk\WP\Email;
 class Download extends Subscribe {
 
 	public $field_prefix = 'dl';
-	
 	public $policyNewsletter = '';
-	
 	public $action = 'svbk_download';
+	public $user_subject = '';
 
 	public function init() {
 
@@ -84,12 +83,13 @@ class Download extends Subscribe {
 			
 			$this->log( 'warning', 'Missing user template for form: {form}' );
 
-			$email = $thia->getEmail();
-			$email->subject = $this->admin_subject ?: __('Contact Request (no-template)', 'svbk-forms');
+			$email = $this->getEmail();
+			$email->to = $this->getUser();
+			$email->subject = $this->user_subject ?: __('Download your file', 'svbk-forms');
 			
 			$body = sprintf( __(' Thanks for your request, please download your file <a href="%s">here</a>', 'svbk-forms' ) , $this->getDownloadLink() );
 			
-			$email->text_body = $body;
+			// $email->text_body = $body;
 			$email->html_body = '<p>' . $body .  '</p>';
 			$email->tags = array_merge( $email->tags, $tags, array('user-email') );	
 			
