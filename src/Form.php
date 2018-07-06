@@ -400,6 +400,10 @@ class Form {
 		return $output;
 	}
 
+	public function formId() {
+		return $this->action . self::PREFIX_SEPARATOR . $this->index;
+	}
+
 	public function renderParts( $args = array() ) {
 
 		$defaults = array(
@@ -410,9 +414,7 @@ class Form {
 
 		$output = array();
 
-		$form_id = $this->field_prefix . self::PREFIX_SEPARATOR . $this->index;
-
-		$output['formBegin'] = '<form class="svbk-form" data-form-action="' . esc_attr( $this->action ) . '" action="' . esc_url( $this->submitUrl() . '#' . $form_id ) . '" id="' . esc_attr( $form_id ) . '" method="POST">';
+		$output['formBegin'] = '<form class="svbk-form" data-form-action="' . esc_attr( $this->action ) . '" action="' . esc_url( $this->submitUrl() . '#' . $this->formId() ) . '" id="' . esc_attr( $this->formId() ) . '" method="POST">';
 
 		$inputFieldSort = wp_list_sort( $this->inputFields, 'priority', 'ASC', true );
 
@@ -423,8 +425,8 @@ class Form {
 		$output['requiredNotice'] = '<div class="required-notice">' . __( 'Required fields', 'svbk-forms' ) . '</div>';
 
 		$output['input']['index']  = '<input type="hidden" name="index" value="' . $this->index . '" >';
-		$output['submitButton'] = '<button type="submit" name="' . $this->fieldName( 'subscribe' ) . '" class="button">' . esc_html( $args['submit_button_label'] ) . '</button>';
-		$output['messages'] = '<div class="messages"><ul></ul><div class="close"><span>' . __( 'Close', 'svbk-forms' ) . '</span></div></div>';
+		$output['submitButton'] = '<button type="submit" name="' . $this->fieldName( 'subscribe' ) . '" class="button form__button">' . esc_html( $args['submit_button_label'] ) . '</button>';
+		$output['messages'] = '<div class="messages form-messages"><ul></ul><div class="close form-messages__close"><span>' . __( 'Close', 'svbk-forms' ) . '</span></div></div>';
 		$output['formEnd'] = '</form>';
 
 		return $output;

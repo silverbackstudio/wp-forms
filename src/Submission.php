@@ -22,8 +22,12 @@ class Submission extends Form {
 	public $policyAllToggleText = '';	
 	
 	public $policyUnsubscribe = '';
-
+	
 	public $attributionParams = array();
+	
+	public $recaptchaKey = '';
+	public $recaptchaSecret = '';
+	public $recaptchaScore = 0.5;
 	
 	public function init() {
 	
@@ -74,6 +78,10 @@ class Submission extends Form {
 			'filter' => self::$defaultPolicyFilter,
 		);			
 		
+		if ( $this->recaptchaSecret && ! $this->recaptchaKey ) {
+			$this->log( 'error', 'reCAPTCHA secret specified but no key' ); 
+		}
+		
 		parent::init();
 	}
 	
@@ -99,8 +107,68 @@ class Submission extends Form {
 				$this->log( 'info', 'Form policy accepted for {email}', array( 'term' => $term, 'email' => $this->getInput('email') ) ); 
 			} 
 		}	
+		
+		$this->validateAntispam();
 
 	}	
+	
+	public function validateAntispam(){
+
+		if ( ! $this->recaptchaSecret ) {
+			return;
+		}
+		
+		$recaptchaResponse = filter_input( INPUT_POST, 'g-recaptcha-response', FILTER_DEFAULT );
+		
+        if (empty($recaptchaResponse)) {
+	    	$this->addError( __('Unable to perform antispam check. The administrator has been notified. Please contact us direcly or try again later') );
+        }
+
+		$ip_address = Helpers\Networking\IpAddress::getClientAddress();
+
+        $params = new \ReCaptcha\RequestParameters($this->recaptchaSecret, $recaptchaResponse, $ip_address, \ReCaptcha\ReCaptcha::VERSION );
+        $requestMethod = new \ReCaptcha\RequestMethod\Post();
+        $rawResponse = $requestMethod->submit($params);
+		$responseData = json_decode( $rawResponse, true );
+		
+		$responseData['ip'] = $ip_address;
+		
+  		$this->log( 'debug', 'reCAPTCHA validation response', array( 'rawResponse' => $rawResponse ) ); 
+
+		$response =  \ReCaptcha\Response::fromJson( $rawResponse );	
+	
+		if ($response->isSuccess()) {
+		   
+			if ( empty( $responseData['score'] ) ) {
+    	  		$this->log( 'warning', 'No score reported by reCAPTCHA, please check API version', array( 'rawResponse' => $rawResponse, 'ip' => $ip_address ) ); 
+		    }
+		   
+		    if( $response->getHostName() !== $_SERVER['SERVER_NAME'] ) {
+		    	$this->addError( __('Your antispam check did not validate, please reload the page and try again') );
+    	  		$this->log( 'notice', 'reCAPTCHA challenge not passed: invalid hostname reported: {hostname}', $responseData ); 
+		    } elseif ( empty( $responseData['action'] ) || ( $responseData['action'] !== $this->action ) ) {
+		    	$this->addError( __('Your antispam check did not validate, please reload the page and try again') );
+    	  		$this->log( 'notice', 'reCAPTCHA challenge not passed: invalid action reported: [{action}] instad of ' . $this->action , $responseData ); 
+		    } else if( ! empty( $responseData['score'] ) && ( floatval( $responseData['score'] ) < $this->recaptchaScore ) ) {
+		    	$this->addError( __('Google reCAPTCHA reported you as a probable spammer') );
+    	  		$this->log( 'notice', 'reCAPTCHA challenge not passed: insufficient score [{score}] for IP {ip}', $responseData ); 
+		    } else {
+		    	$this->log( 'info', 'reCAPTCHA challenge passed: Score {score}, IP: {ip}', $responseData ); 
+		    }	    
+		    
+		    
+		} else {
+	    	$errors = $response->getErrorCodes();
+	    	
+	    	$this->addError( __('Unable to perform antispam check. The administrator has been notified. Please contact us direcly or try again later') );
+	    	
+	    	foreach( $errors as $error ) {
+	    		$this->log( 'warning', 'Error in validating reCAPTCHA: {error}', array( 'error' => $error, 'rawResponse' => $rawResponse ) ); 
+	    	}
+	    	
+		}	
+		
+	}
 	
 	public function checkPolicy( $policyTerm = 'policy_service' ) {
 		
@@ -198,9 +266,20 @@ class Submission extends Form {
 	}
 
 	public function enqueue_scripts() {
-		wp_enqueue_script('iubenda-consent', 'https://cdn.iubenda.com/consent_solution/iubenda_cons.js');
 		
-		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.1', 'deps' => array( 'jquery', 'iubenda-consent' ) , 'source' => 'gh'  ] );
+		$forms_dependancies = array( 'jquery-ui-widget');
+		
+		if( $this->recaptchaKey ) {
+			wp_enqueue_script('recaptcha-v3', 'https://www.google.com/recaptcha/api.js?render=' . $this->recaptchaKey, array('jquery') );
+			wp_localize_script( 'recaptcha-v3', 'reCAPTCHA', array(  
+				'key' => $this->recaptchaKey,
+				'version' => 3,
+			) );
+			
+			$forms_dependancies[] = 'recaptcha-v3';
+		}
+	
+		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.2', 'deps' => $forms_dependancies  , 'source' => 'gh'  ] );
 		Helpers\Theme\Script::enqueue( 'silverbackstudio/utm-form', 'dest/utm_form-1.0.4.min.js', [ 'source' => 'gh', 'profiling' => true ] );
 		
 		$utm_forms_params = array_merge( 
