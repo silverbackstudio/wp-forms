@@ -24,6 +24,8 @@ class Form {
 
 	public static $defaults = array();
 	
+	public static $scriptsEnqueued = false;
+	
 	public $action = 'svbk_submission';	
 	
 	public $errors = array();
@@ -36,7 +38,13 @@ class Form {
 
 		self::configure( $this, array_merge( Form::$defaults, self::$defaults, $properties ) );
 		
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		if ( ! self::$scriptsEnqueued ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+			self::$scriptsEnqueued = true;
+		}
+		
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_instance_scripts' ) );
+		
 		add_action( 'init', array( $this, 'init' ), 20 );		
 		add_action( 'init', array( $this, 'processSubmission' ), 100 );		
 		add_action( 'wp', array( $this, 'ready' ) );
@@ -432,9 +440,8 @@ class Form {
 		return $output;
 	}
 
-	public function enqueue_scripts() {
-	
-	}
+	public function enqueue_scripts() {	}
+	public function enqueue_instance_scripts() { }
 	
 	public function log( $level, $message, $context = [] ) {
 		do_action( 'log', $level, $message, array_merge( array( 'component' => 'wp-forms', 'form' => $this->action ), $context ) );

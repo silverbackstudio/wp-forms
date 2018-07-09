@@ -1,3 +1,5 @@
+/* global grecaptcha */
+/* global reCAPTCHA */
 
 (function($){
     
@@ -5,7 +7,6 @@
      
         // Default options.
         options: {
-            recaptha: true,
             action: '',
             trackFallbackTimeout: 3000,
             messagesContainer: '.messages',
@@ -13,7 +14,7 @@
             submitTimeout: null,
             messages: null,
             response: {},
-            isLoading: false,
+            isLoading: false
         },     
      
         _create: function() {
@@ -30,9 +31,6 @@
             }
             
             this.options.messages = $(this.options.messagesContainer + ' ul', this.element);
-
-            this.updateCaptcha();
-            
         },
         
         submit : function( e ){
@@ -76,29 +74,6 @@
             
             e.preventDefault();
             
-        },
-        
-        updateCaptcha: function(){
-            
-            if( !grecaptcha || ! reCAPTCHA || ! reCAPTCHA.key ){
-                return;
-            }
-            
-            var self = this;
-            
-            grecaptcha.ready(function() {
-    			grecaptcha.execute( reCAPTCHA.key, { action: self.options.action } ).then( function(token) {
-    	    		var tokenInput = $('<input>').attr(
-    	    		    { 
-    	    		        type: 'hidden', 
-    	    		        name: 'g-recaptcha-response', 
-    	    		        value: token 
-    	    		    }
-    	    		);
-    	    		self.element.append(tokenInput);
-    			});     
-            });
-              
         },
         
         _formSuccess: function(response){
@@ -179,7 +154,7 @@
             this.element.removeClass('response-success response-error response-request-error');
             this.options.messages.empty();
             
-            this.updateCaptcha();
+            this._trigger( 'reset', null, { instance: this } );
         },
         
         addMessage : function( message , type ) {
@@ -234,8 +209,6 @@
         },
         
     });
-
-    $('.svbk-form').svbkForm();
 
     $('.policy-flags-open').on('click', function(e){
         e.preventDefault();

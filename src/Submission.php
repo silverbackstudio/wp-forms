@@ -267,19 +267,25 @@ class Submission extends Form {
 
 	public function enqueue_scripts() {
 		
-		$forms_dependancies = array( 'jquery-ui-widget');
-		
+		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.2.1', 'deps' => array( 'jquery-ui-widget' ), 'source' => 'gh'  ] );
+
 		if( $this->recaptchaKey ) {
 			wp_enqueue_script('recaptcha-v3', 'https://www.google.com/recaptcha/api.js?render=' . $this->recaptchaKey, array('jquery') );
-			wp_localize_script( 'recaptcha-v3', 'reCAPTCHA', array(  
+			
+			Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/recaptcha.js', [ 
+				'handle' => 'wp-forms-recaptcha',
+				'version' => '2.2', 
+				'deps' => array( 'jquery-ui-widget', 'silverbackstudio/wp-forms' ), 
+				'source' => 'gh',
+			] );
+			
+			wp_localize_script( 'wp-forms-recaptcha', 'reCAPTCHA', array(  
 				'key' => $this->recaptchaKey,
 				'version' => 3,
-			) );
+			) );			
 			
-			$forms_dependancies[] = 'recaptcha-v3';
 		}
 	
-		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.2', 'deps' => $forms_dependancies  , 'source' => 'gh'  ] );
 		Helpers\Theme\Script::enqueue( 'silverbackstudio/utm-form', 'dest/utm_form-1.0.4.min.js', [ 'source' => 'gh', 'profiling' => true ] );
 		
 		$utm_forms_params = array_merge( 
