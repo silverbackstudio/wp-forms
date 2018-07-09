@@ -121,7 +121,7 @@ class Submission extends Form {
 		$recaptchaResponse = filter_input( INPUT_POST, 'g-recaptcha-response', FILTER_DEFAULT );
 		
         if (empty($recaptchaResponse)) {
-	    	$this->addError( __('Unable to perform antispam check. The administrator has been notified. Please contact us direcly or try again later') );
+	    	$this->addError( __('Unable to perform antispam check. The administrator has been notified. Please contact us direcly or try again later', 'svbk-forms') );
         }
 
 		$ip_address = Helpers\Networking\IpAddress::getClientAddress();
@@ -144,13 +144,13 @@ class Submission extends Form {
 		    }
 		   
 		    if( $response->getHostName() !== $_SERVER['SERVER_NAME'] ) {
-		    	$this->addError( __('Your antispam check did not validate, please reload the page and try again') );
+		    	$this->addError( __('Your antispam check did not validate, please reload the page and try again', 'svbk-formss') );
     	  		$this->log( 'notice', 'reCAPTCHA challenge not passed: invalid hostname reported: {hostname}', $responseData ); 
 		    } elseif ( empty( $responseData['action'] ) || ( $responseData['action'] !== $this->action ) ) {
-		    	$this->addError( __('Your antispam check did not validate, please reload the page and try again') );
+		    	$this->addError( __('Your antispam check did not validate, please reload the page and try again', 'svbk-forms') );
     	  		$this->log( 'notice', 'reCAPTCHA challenge not passed: invalid action reported: [{action}] instad of ' . $this->action , $responseData ); 
 		    } else if( ! empty( $responseData['score'] ) && ( floatval( $responseData['score'] ) < $this->recaptchaScore ) ) {
-		    	$this->addError( __('Google reCAPTCHA reported you as a probable spammer') );
+		    	$this->addError( __('Google reCAPTCHA reported you as a probable spammer', 'svbk-forms') );
     	  		$this->log( 'notice', 'reCAPTCHA challenge not passed: insufficient score [{score}] for IP {ip}', $responseData ); 
 		    } else {
 		    	$this->log( 'info', 'reCAPTCHA challenge passed: Score {score}, IP: {ip}', $responseData ); 
@@ -160,7 +160,7 @@ class Submission extends Form {
 		} else {
 	    	$errors = $response->getErrorCodes();
 	    	
-	    	$this->addError( __('Unable to perform antispam check. The administrator has been notified. Please contact us direcly or try again later') );
+	    	$this->addError( __('Unable to perform antispam check. The administrator has been notified. Please contact us direcly or try again later', 'svbk-forms') );
 	    	
 	    	foreach( $errors as $error ) {
 	    		$this->log( 'warning', 'Error in validating reCAPTCHA: {error}', array( 'error' => $error, 'rawResponse' => $rawResponse ) ); 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Silverback Helpers\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-04 09:29+0000\n"
-"PO-Revision-Date: 2018-07-04 09:30+0000\n"
+"POT-Creation-Date: 2018-07-09 13:19+0000\n"
+"PO-Revision-Date: 2018-07-09 13:24+0000\n"
 "Last-Translator: SilverbackStudio <webmaster@silverbackstudio.it>\n"
 "Language-Team: Italiano\n"
 "Language: it_IT\n"
@@ -13,38 +13,112 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:21
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:16
+#: src/Form.php:75
+msgid "Submit"
+msgstr "Invia"
+
+#: src/Form.php:239
+msgid "Thanks for your request, we will reply as soon as possible."
+msgstr "Grazie per la tua richiesta, risponderemo prima possibile."
+
+#: src/Form.php:278
+msgid "Input data error"
+msgstr "Errore nei dati inseriti"
+
+#: src/Form.php:323
+#, php-format
+msgid "Empty or invalid field [%s]"
+msgstr "Campo vuoto o non valido [%s]"
+
+#: src/Form.php:433
+msgid "Required fields"
+msgstr "Campi obbligatori"
+
+#: src/Form.php:437
+msgid "Close"
+msgstr "Chiudi"
+
+#: src/Submission.php:34
 msgid ""
-"I have read the [privacy-policy-link] and agree to the processing of my data "
-"to receive informative material"
+"<b>[privacy-controller-name]</b> will process your information to respond to "
+"your request."
 msgstr ""
-"Ho letto la [privacy-policy-link] e acconsento al trattamento dei miei dati "
-"per ricevere materiale informativo"
+"<b>[privacy-controller-name]</b> tratterà i tuoi dati per rispondere alla "
+"tua richiesta"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:25
-msgid "Message"
-msgstr "Messaggio"
+#: src/Submission.php:35
+msgid ""
+"You can unsubscribe at any time by clicking on the link at the bottom of "
+"each email."
+msgstr ""
+"Puoi opporti al trattamento in qualsiasi momento cliccando sul link in calce "
+"in fondo ad ogni email"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:28
-msgid "Please write a brief description of your request"
-msgstr "Descrivi la tua richiesta per poter continuare"
+#: src/Submission.php:36
+msgid ""
+"I have read and accept the [privacy-policy-link] and agree to receive "
+"personalized promotional informations."
+msgstr ""
+"Ho letto la [privacy-policy-link] ed acconsento a ricevere informazioni "
+"promozionali personalizzate.\n"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:35
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:21
-msgid "The newsletter policy must be accepted to continue"
-msgstr "Il consenso sui materiali informativi è necessario per proseguire"
+#: src/Submission.php:37
+#, php-format
+msgid "To select partial consents %s"
+msgstr "Per selezionare i consensi parzialmente %s"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:60
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:75
-msgid "Unable to send email, please contact the website owner"
-msgstr "Impossibile inviare l'email, contattare il proprietario del sito"
+#: src/Submission.php:38
+msgid "I have read and agree to the [privacy-policy-link]"
+msgstr "Ho letto e accetto la [privacy-policy-link]"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:91
-msgid "Contact Request (no-template)"
-msgstr "Richiesta contatto (no-template)"
+#: src/Submission.php:57
+msgid "First Name"
+msgstr "Nome"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Subscribe.php:24
+#: src/Submission.php:59
+msgid "Please enter first name"
+msgstr "Per favore inserisci il nome"
+
+#: src/Submission.php:65
+msgid "Email Address"
+msgstr "Indirizzo Email"
+
+#: src/Submission.php:68
+msgid "Invalid email address"
+msgstr "Indirizzo e-mail non valido"
+
+#: src/Submission.php:77
+msgid "Privacy Policy terms must be accepted"
+msgstr "L'informativa sulla privacy deve essere accettata"
+
+#: src/Submission.php:124 src/Submission.php:163
+msgid ""
+"Unable to perform antispam check. The administrator has been notified. "
+"Please contact us direcly or try again later"
+msgstr ""
+"Non è stato possibile valutare il livello di spam della tua richiesta. E' "
+"stata inviata una notifica all'amministratore del sito. Per favore "
+"contattaci direttamente o riprova più tardi."
+
+#: src/Submission.php:150
+msgid ""
+"Your antispam check did not validate, please reload the page and try again"
+msgstr ""
+"C'è stato un problema nel valutare il livello di spam della tua richiesta, "
+"per favore ricarica la pagina e riprova."
+
+#: src/Submission.php:153
+msgid "Google reCAPTCHA reported you as a probable spammer"
+msgstr ""
+"Il sistema di protezione dallo spam ha valutato come SPAM la tua richiesta, "
+"prova a visitare il sito dal browser che usi solitamente o contattaci "
+"direttamente."
+
+#: src/Submission.php:234
+msgid "click here"
+msgstr "clicca qui"
+
+#: src/Subscribe.php:24
 msgid ""
 "I have read the [privacy-policy-link] and agree to the processing of my data "
 "to receive personalized promotional materials based on my browsing data."
@@ -53,97 +127,43 @@ msgstr ""
 "per ricevere informazioni promozionali personalizzate sulla base dei miei "
 "dati di navigazione"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Subscribe.php:29
+#: src/Subscribe.php:29
 msgid "The marketing policy must be accepted to continue"
 msgstr "Il consenso sui materiali promozionali è necessario per proseguire"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:30
+#: src/Contact.php:21 src/Download.php:16
 msgid ""
-"<b>[privacy-controller-name]</b> will process your information to respond to "
-"your request."
+"I have read the [privacy-policy-link] and agree to the processing of my data "
+"to receive informative material"
 msgstr ""
-"<b>[privacy-controller-name]</b> tratterà i tuoi dati per rispondere alla "
-"tua richiesta"
+"Ho letto la [privacy-policy-link] e acconsento al trattamento dei miei dati "
+"per ricevere materiale informativo"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:31
-msgid ""
-"You can unsubscribe at any time by clicking on the link at the bottom of "
-"each email."
-msgstr ""
-"Puoi opporti al trattamento in qualsiasi momento cliccando sul link in calce "
-"in fondo ad ogni email"
+#: src/Contact.php:25
+msgid "Message"
+msgstr "Messaggio"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:32
-msgid ""
-"I have read and accept the [privacy-policy-link] and agree to receive "
-"personalized promotional informations."
-msgstr ""
-"Ho letto la [privacy-policy-link] ed acconsento a ricevere informazioni "
-"promozionali personalizzate.\n"
+#: src/Contact.php:28
+msgid "Please write a brief description of your request"
+msgstr "Descrivi la tua richiesta per poter continuare"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:33
-#, php-format
-msgid "To select partial consents %s"
-msgstr "Per selezionare i consensi parzialmente %s"
+#: src/Contact.php:35 src/Download.php:21
+msgid "The newsletter policy must be accepted to continue"
+msgstr "Il consenso sui materiali informativi è necessario per proseguire"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:34
-msgid "I have read and agree to the [privacy-policy-link]"
-msgstr "Ho letto e accetto la [privacy-policy-link]"
+#: src/Contact.php:60 src/Download.php:75
+msgid "Unable to send email, please contact the website owner"
+msgstr "Impossibile inviare l'email, contattare il proprietario del sito"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:50
-msgid "First Name"
-msgstr "Nome"
+#: src/Contact.php:91
+msgid "Contact Request (no-template)"
+msgstr "Richiesta contatto (no-template)"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:52
-msgid "Please enter first name"
-msgstr "Per favore inserisci il nome"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:58
-msgid "Email Address"
-msgstr "Indirizzo Email"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:61
-msgid "Invalid email address"
-msgstr "Indirizzo e-mail non valido"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:70
-msgid "Privacy Policy terms must be accepted"
-msgstr "L'informativa sulla privacy deve essere accettata"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:163
-msgid "click here"
-msgstr "clicca qui"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:67
-msgid "Submit"
-msgstr "Invia"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:231
-msgid "Thanks for your request, we will reply as soon as possible."
-msgstr "Grazie per la tua richiesta, risponderemo prima possibile."
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:270
-msgid "Input data error"
-msgstr "Errore nei dati inseriti"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:315
-#, php-format
-msgid "Empty or invalid field [%s]"
-msgstr "Campo vuoto o non valido [%s]"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:423
-msgid "Required fields"
-msgstr "Campi obbligatori"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:427
-msgid "Close"
-msgstr "Chiudi"
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:88
+#: src/Download.php:88
 msgid "Download your file"
-msgstr ""
+msgstr "Scarica il tuo file"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:90
+#: src/Download.php:90
 #, php-format
 msgid ""
 " Thanks for your request, please download your file <a href=\"%s\">here</a>"
@@ -151,7 +171,7 @@ msgstr ""
 "Grazie per la tua richiesta, puoi scaricare il file cliccando <a href=\"%s\">"
 "qui</a>"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:136
+#: src/Download.php:136
 msgid ""
 "The specified download doesn't exists anymore. Please contact site owner"
 msgstr ""

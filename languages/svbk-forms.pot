@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-04 09:29+0000\n"
+"POT-Creation-Date: 2018-07-09 13:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,132 +14,144 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:21
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:16
-msgid ""
-"I have read the [privacy-policy-link] and agree to the processing of my data "
-"to receive informative material"
+#: src/Form.php:75
+msgid "Submit"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:25
-msgid "Message"
+#: src/Form.php:239
+msgid "Thanks for your request, we will reply as soon as possible."
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:28
-msgid "Please write a brief description of your request"
+#: src/Form.php:278
+msgid "Input data error"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:35
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:21
-msgid "The newsletter policy must be accepted to continue"
+#: src/Form.php:323
+#, php-format
+msgid "Empty or invalid field [%s]"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:60
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:75
-msgid "Unable to send email, please contact the website owner"
+#: src/Form.php:433
+msgid "Required fields"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Contact.php:91
-msgid "Contact Request (no-template)"
+#: src/Form.php:437
+msgid "Close"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Subscribe.php:24
-msgid ""
-"I have read the [privacy-policy-link] and agree to the processing of my data "
-"to receive personalized promotional materials based on my browsing data."
-msgstr ""
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Subscribe.php:29
-msgid "The marketing policy must be accepted to continue"
-msgstr ""
-
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:30
+#: src/Submission.php:34
 msgid ""
 "<b>[privacy-controller-name]</b> will process your information to respond to "
 "your request."
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:31
+#: src/Submission.php:35
 msgid ""
 "You can unsubscribe at any time by clicking on the link at the bottom of "
 "each email."
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:32
+#: src/Submission.php:36
 msgid ""
 "I have read and accept the [privacy-policy-link] and agree to receive "
 "personalized promotional informations."
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:33
+#: src/Submission.php:37
 #, php-format
 msgid "To select partial consents %s"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:34
+#: src/Submission.php:38
 msgid "I have read and agree to the [privacy-policy-link]"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:50
+#: src/Submission.php:57
 msgid "First Name"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:52
+#: src/Submission.php:59
 msgid "Please enter first name"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:58
+#: src/Submission.php:65
 msgid "Email Address"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:61
+#: src/Submission.php:68
 msgid "Invalid email address"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:70
+#: src/Submission.php:77
 msgid "Privacy Policy terms must be accepted"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Submission.php:163
+#: src/Submission.php:124 src/Submission.php:163
+msgid ""
+"Unable to perform antispam check. The administrator has been notified. "
+"Please contact us direcly or try again later"
+msgstr ""
+
+#: src/Submission.php:150
+msgid ""
+"Your antispam check did not validate, please reload the page and try again"
+msgstr ""
+
+#: src/Submission.php:153
+msgid "Google reCAPTCHA reported you as a probable spammer"
+msgstr ""
+
+#: src/Submission.php:234
 msgid "click here"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:67
-msgid "Submit"
+#: src/Subscribe.php:24
+msgid ""
+"I have read the [privacy-policy-link] and agree to the processing of my data "
+"to receive personalized promotional materials based on my browsing data."
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:231
-msgid "Thanks for your request, we will reply as soon as possible."
+#: src/Subscribe.php:29
+msgid "The marketing policy must be accepted to continue"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:270
-msgid "Input data error"
+#: src/Contact.php:21 src/Download.php:16
+msgid ""
+"I have read the [privacy-policy-link] and agree to the processing of my data "
+"to receive informative material"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:315
-#, php-format
-msgid "Empty or invalid field [%s]"
+#: src/Contact.php:25
+msgid "Message"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:423
-msgid "Required fields"
+#: src/Contact.php:28
+msgid "Please write a brief description of your request"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Form.php:427
-msgid "Close"
+#: src/Contact.php:35 src/Download.php:21
+msgid "The newsletter policy must be accepted to continue"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:88
+#: src/Contact.php:60 src/Download.php:75
+msgid "Unable to send email, please contact the website owner"
+msgstr ""
+
+#: src/Contact.php:91
+msgid "Contact Request (no-template)"
+msgstr ""
+
+#: src/Download.php:88
 msgid "Download your file"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:90
+#: src/Download.php:90
 #, php-format
 msgid ""
 " Thanks for your request, please download your file <a href=\"%s\">here</a>"
 msgstr ""
 
-#: ../../../../vendor/silverbackstudio/wp-forms/src/Download.php:136
+#: src/Download.php:136
 msgid ""
 "The specified download doesn't exists anymore. Please contact site owner"
 msgstr ""
