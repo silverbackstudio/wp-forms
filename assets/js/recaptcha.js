@@ -1,3 +1,6 @@
+/* global grecaptcha */
+/* global reCAPTCHA */
+
 (function( $ ) {
 
     if( typeof grecaptcha === 'undefined' || grecaptcha === null ) {
@@ -10,20 +13,29 @@
 
    $('.svbk-form').bind( 'svbkformcreate svbkformreset', function( event, data ){
        
-        var form = $(event.target).svbkForm('instance');
+        var $form = $(event.target);
+        var svbkForm = $form.svbkForm('instance');
         
-        console.log( form.option('action') );
-
         grecaptcha.ready(function() {
-			grecaptcha.execute( reCAPTCHA.key, { action: form.option('action') } ).then( function(token) {
-	    		var tokenInput = $('<input>').attr(
-	    		    { 
-	    		        type: 'hidden', 
-	    		        name: 'g-recaptcha-response', 
-	    		        value: token 
-	    		    }
-	    		);
-	    		$(event.target).append(tokenInput);
+            
+			grecaptcha.execute( reCAPTCHA.key, { action: svbkForm.option('action') } ).then( function(token) {
+			    
+			    var $grecaptchaField = $form.find('input[name="g-recaptcha-response"]');
+			    
+			    if( ! $grecaptchaField.length ) {
+			        
+    	    		var $grecaptchaField = $('<input>').attr(
+    	    		    { 
+    	    		        type: 'hidden', 
+    	    		        name: 'g-recaptcha-response', 
+    	    		    }
+    	    		);
+    	    		
+    	    		$form.append($grecaptchaField);
+			    } 
+			    
+                $grecaptchaField.val(token);
+			    
 			});     
         });       
        

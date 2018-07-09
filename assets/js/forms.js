@@ -1,6 +1,3 @@
-/* global grecaptcha */
-/* global reCAPTCHA */
-
 (function($){
     
     $.widget( "silverback.svbkForm", {
@@ -33,11 +30,11 @@
             this.options.messages = $(this.options.messagesContainer + ' ul', this.element);
         },
         
-        submit : function( e ){
+        submit : function( event ){
             
             if ( this.options.isLoading ) {
                 this.addError( 'Your have another request loading, please wait' );
-                e.preventDefault();
+                event.preventDefault();
                 return;
             }
             
@@ -58,6 +55,8 @@
             this.reset(false);
     
             formData += '&ajax=1';
+            
+            this._trigger( 'submit', event, { formData: formData } );            
     
             $.ajax(
             {
@@ -72,7 +71,7 @@
                 complete: this.unsetLoading
             });
             
-            e.preventDefault();
+            event.preventDefault();
             
         },
         
@@ -96,7 +95,7 @@
                     
                 }
 
-                this._trigger( "formError", null, { 
+                this._trigger( "error", null, { 
                     'response' : response 
                 } );
 
@@ -108,7 +107,9 @@
                 this.options.submitTimeout = setTimeout( 
                     this.afterSuccess, 
                     this.options.trackFallbackTimeout
-                );                
+                );             
+                
+                this._trigger( 'success', null, { response: response } );                  
                 
             }
 
@@ -131,7 +132,7 @@
 
             this.element.addClass('response-request-error');
 
-            this._trigger( "formRequestError", null, { 
+            this._trigger( "requesterror", null, { 
                 'response' : response 
             } );
             
@@ -154,7 +155,7 @@
             this.element.removeClass('response-success response-error response-request-error');
             this.options.messages.empty();
             
-            this._trigger( 'reset', null, { instance: this } );
+            this._trigger( 'reset' );
         },
         
         addMessage : function( message , type ) {

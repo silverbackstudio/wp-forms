@@ -267,14 +267,16 @@ class Submission extends Form {
 
 	public function enqueue_scripts() {
 		
-		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.2.1', 'deps' => array( 'jquery-ui-widget' ), 'source' => 'gh'  ] );
-
+		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.2.3', 'deps' => array( 'jquery-ui-widget' ), 'source' => 'gh'  ] );
+		
+		wp_add_inline_script( 'silverbackstudio/wp-forms', "(function($){ $(document).ready( function(){ $('.svbk-form').svbkForm() }); })(jQuery);" );
+		
 		if( $this->recaptchaKey ) {
 			wp_enqueue_script('recaptcha-v3', 'https://www.google.com/recaptcha/api.js?render=' . $this->recaptchaKey, array('jquery') );
 			
 			Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/recaptcha.js', [ 
 				'handle' => 'wp-forms-recaptcha',
-				'version' => '2.2', 
+				'version' => '2.2.3', 
 				'deps' => array( 'jquery-ui-widget', 'silverbackstudio/wp-forms' ), 
 				'source' => 'gh',
 			] );
