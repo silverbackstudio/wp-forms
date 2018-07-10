@@ -229,7 +229,7 @@ class Submission extends Form {
 
 		if ( $groupTerms ) {
 			
-			$policyFlagsId = 'policy-flags-' . $this->field_prefix . self::PREFIX_SEPARATOR . $this->index;
+			$policyFlagsId = 'policy-flags-' . $this->action . self::PREFIX_SEPARATOR . $this->index;
 			
 			$policy_all_toogle = '<a class="policy-flags-open disable-anchor" href="#' . esc_attr( $policyFlagsId ) . '">' . __( 'click here', 'svbk-forms' ) . '</a>.';
 			$policy_all_toogle_text = sprintf( $args['policy_all_toggle_text'], $policy_all_toogle );

@@ -34,8 +34,6 @@ class Form {
 
 	public function __construct( $properties = array() ) {
 		
-		$this->index = self::$next_index++;
-
 		self::configure( $this, array_merge( Form::$defaults, self::$defaults, $properties ) );
 		
 		if ( ! self::$scriptsEnqueued ) {
@@ -339,6 +337,7 @@ class Form {
 		$classes = array_merge(
 			array(
 				$this->field_prefix . self::PREFIX_SEPARATOR . $fieldClass . '-group',
+				$this->action . self::PREFIX_SEPARATOR . $fieldClass . '-group',
 				'field-group',
 			),
 			isset( $fieldAttr['class'] ) ? (array) $fieldAttr['class'] : array()
@@ -413,6 +412,8 @@ class Form {
 	}
 
 	public function renderParts( $args = array() ) {
+
+		$this->index = self::$next_index++;
 
 		$defaults = array(
 			'submit_button_label' => $this->submitButtonText,
