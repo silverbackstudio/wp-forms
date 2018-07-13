@@ -70,10 +70,6 @@ class Form {
 		
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 5184f0aaff1023b1eff703f7d9d2c378b1db2bed
 	public function init() {
 		
 		$this->submitButtonText = $this->submitButtonText ?: __('Submit', 'svbk-forms');		
