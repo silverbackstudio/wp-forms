@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Silverback Helpers\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-06 16:11+0000\n"
-"PO-Revision-Date: 2018-03-06 16:12+0000\n"
+"POT-Creation-Date: 2018-07-09 13:19+0000\n"
+"PO-Revision-Date: 2018-07-09 13:24+0000\n"
 "Last-Translator: SilverbackStudio <webmaster@silverbackstudio.it>\n"
-"Language-Team: Italian\n"
+"Language-Team: Italiano\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
@@ -13,88 +13,174 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Mandrill.php:35
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Mandrill.php:106
-msgid ""
-"The requesto to our mail server failed, please try again later or contact "
-"the site owner."
-msgstr ""
-"La richiesta di invio non è andata a buon fine, per favore riprova più tardi "
-"o contatta il proprietario del sito."
+#: src/Form.php:75
+msgid "Submit"
+msgstr "Invia"
 
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Mandrill.php:165
+#: src/Form.php:239
+msgid "Thanks for your request, we will reply as soon as possible."
+msgstr "Grazie per la tua richiesta, risponderemo prima possibile."
+
+#: src/Form.php:278
+msgid "Input data error"
+msgstr "Errore nei dati inseriti"
+
+#: src/Form.php:323
+#, php-format
+msgid "Empty or invalid field [%s]"
+msgstr "Campo vuoto o non valido [%s]"
+
+#: src/Form.php:433
+msgid "Required fields"
+msgstr "Campi obbligatori"
+
+#: src/Form.php:437
+msgid "Close"
+msgstr "Chiudi"
+
+#: src/Submission.php:34
+msgid ""
+"<b>[privacy-controller-name]</b> will process your information to respond to "
+"your request."
+msgstr ""
+"<b>[privacy-controller-name]</b> tratterà i tuoi dati per rispondere alla "
+"tua richiesta"
+
+#: src/Submission.php:35
+msgid ""
+"You can unsubscribe at any time by clicking on the link at the bottom of "
+"each email."
+msgstr ""
+"Puoi opporti al trattamento in qualsiasi momento cliccando sul link in calce "
+"in fondo ad ogni email"
+
+#: src/Submission.php:36
+msgid ""
+"I have read and accept the [privacy-policy-link] and agree to receive "
+"personalized promotional informations."
+msgstr ""
+"Ho letto la [privacy-policy-link] ed acconsento a ricevere informazioni "
+"promozionali personalizzate.\n"
+
+#: src/Submission.php:37
+#, php-format
+msgid "To select partial consents %s"
+msgstr "Per selezionare i consensi parzialmente %s"
+
+#: src/Submission.php:38
+msgid "I have read and agree to the [privacy-policy-link]"
+msgstr "Ho letto e accetto la [privacy-policy-link]"
+
+#: src/Submission.php:57
+msgid "First Name"
+msgstr "Nome"
+
+#: src/Submission.php:59
+msgid "Please enter first name"
+msgstr "Per favore inserisci il nome"
+
+#: src/Submission.php:65
+msgid "Email Address"
+msgstr "Indirizzo Email"
+
+#: src/Submission.php:68
+msgid "Invalid email address"
+msgstr "Indirizzo e-mail non valido"
+
+#: src/Submission.php:77
+msgid "Privacy Policy terms must be accepted"
+msgstr "L'informativa sulla privacy deve essere accettata"
+
+#: src/Submission.php:124 src/Submission.php:163
+msgid ""
+"Unable to perform antispam check. The administrator has been notified. "
+"Please contact us direcly or try again later"
+msgstr ""
+"Non è stato possibile valutare il livello di spam della tua richiesta. E' "
+"stata inviata una notifica all'amministratore del sito. Per favore "
+"contattaci direttamente o riprova più tardi."
+
+#: src/Submission.php:150
+msgid ""
+"Your antispam check did not validate, please reload the page and try again"
+msgstr ""
+"C'è stato un problema nel valutare il livello di spam della tua richiesta, "
+"per favore ricarica la pagina e riprova."
+
+#: src/Submission.php:153
+msgid "Google reCAPTCHA reported you as a probable spammer"
+msgstr ""
+"Il sistema di protezione dallo spam ha valutato come SPAM la tua richiesta, "
+"prova a visitare il sito dal browser che usi solitamente o contattaci "
+"direttamente."
+
+#: src/Submission.php:234
+msgid "click here"
+msgstr "clicca qui"
+
+#: src/Subscribe.php:24
+msgid ""
+"I have read the [privacy-policy-link] and agree to the processing of my data "
+"to receive personalized promotional materials based on my browsing data."
+msgstr ""
+"Ho letto la [privacy-policy-link] e acconsento al trattamento dei miei dati "
+"per ricevere informazioni promozionali personalizzate sulla base dei miei "
+"dati di navigazione"
+
+#: src/Subscribe.php:29
+msgid "The marketing policy must be accepted to continue"
+msgstr "Il consenso sui materiali promozionali è necessario per proseguire"
+
+#: src/Contact.php:21 src/Download.php:16
+msgid ""
+"I have read the [privacy-policy-link] and agree to the processing of my data "
+"to receive informative material"
+msgstr ""
+"Ho letto la [privacy-policy-link] e acconsento al trattamento dei miei dati "
+"per ricevere materiale informativo"
+
+#: src/Contact.php:25
+msgid "Message"
+msgstr "Messaggio"
+
+#: src/Contact.php:28
+msgid "Please write a brief description of your request"
+msgstr "Descrivi la tua richiesta per poter continuare"
+
+#: src/Contact.php:35 src/Download.php:21
+msgid "The newsletter policy must be accepted to continue"
+msgstr "Il consenso sui materiali informativi è necessario per proseguire"
+
+#: src/Contact.php:60 src/Download.php:75
+msgid "Unable to send email, please contact the website owner"
+msgstr "Impossibile inviare l'email, contattare il proprietario del sito"
+
+#: src/Contact.php:91
+msgid "Contact Request (no-template)"
+msgstr "Richiesta contatto (no-template)"
+
+#: src/Download.php:88
+msgid "Download your file"
+msgstr "Scarica il tuo file"
+
+#: src/Download.php:90
 #, php-format
 msgid ""
-"This email address has beeing rejected for an unknown reason [%s]. Please "
-"use another email address."
+" Thanks for your request, please download your file <a href=\"%s\">here</a>"
 msgstr ""
-"Questo indirizzo email é stato rifiutato per un motivo sconosciuto [%s]. Per "
-"favore utilizza un altro indirizzo email."
+"Grazie per la tua richiesta, puoi scaricare il file cliccando <a href=\"%s\">"
+"qui</a>"
 
-#: ../../../../vendor/silverbackstudio/wp-email/src/Marketing/Exceptions/ContactNotExists.php:13
-msgid "Contact does not exists"
-msgstr "Il contatto non esiste"
-
-#: ../../../../vendor/silverbackstudio/wp-email/src/Marketing/Exceptions/ApiKeyInvalid.php:13
-msgid "Please specify an API key"
-msgstr "Per favore specifica una chiave API"
-
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectRule.php:13
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailReject.php:13
+#: src/Download.php:136
 msgid ""
-"This address has beed rejected, this sometimes is due to multiple tries to "
-"send to a full or disabled inbox. Please try again later"
+"The specified download doesn't exists anymore. Please contact site owner"
 msgstr ""
-"Questo indirizzo è stato rifiutato. Questo spesso avviene a causa di troppi "
-"invii consecutivi a una casella disabilitata. Per favore riprova più tardi."
-
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectInvalidAddress.php:13
-msgid "Your email address is invalid. Please check the address or use another."
-msgstr ""
-"Il tuo indirizzo email non è valido. Per favore controlla eventuali errori "
-"oppure utilizza un altro indirizzo."
-
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectHardBounce.php:13
-msgid ""
-"The mailbox is non existent or disabled. Please check your email address is "
-"correct or your contact your mailbox provider."
-msgstr ""
-"L'indirizzo di posta specificato è inesistente o non attivo. Per favore "
-"controlla che l'indirizzo sia corretto oppure contatta il tuo provider di "
-"posta."
-
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectSpam.php:13
-msgid ""
-"Your mailbox is reporting our message as spam. Please add our domain to "
-"trusted senders or contact the website tech support"
-msgstr ""
-"La tua casella di posta ha rilevato il nostro indirizzo come spam. Per "
-"favore aggiungi il nostro dominio nella lista dei mittenti verificati o "
-"contatta il supporto tecnico."
-
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectInvalidSender.php:13
-msgid "Invalid sender address."
-msgstr "Indirizzo del mittente non valido."
-
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectTestLimit.php:13
-msgid "The test mode sending limit is beeing reached."
-msgstr "E' stato raggiunto il limite di invio per l'account di test."
-
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectTestAccount.php:13
-msgid "This email address is a test account."
-msgstr "Questo indirizzo email è un account di prova."
-
-#: ../../../../vendor/silverbackstudio/wp-email/src/Transactional/Exceptions/EmailRejectSoftBounce.php:13
-msgid ""
-"Your mailbox isn't accepting our message. Please check your if mailbox your "
-"mailbox is full."
-msgstr ""
-"La tua casella di post non accetta il nostro messaggio. Per favore controlla "
-"se la tua casella è attiva ed ha spazio disponibile."
+"Il download richiesto non è più disponibile, contattate il proprietario del "
+"sito per maggiori informazioni."
 
 #. Name of the plugin
-msgid "Silverback Email Services"
-msgstr "Silverback Email Services"
+msgid "Silverback Form Classes"
+msgstr "Silverback Form Classes"
 
 #. Description of the plugin
 msgid "SilverbackStudio Mailing Classes"
