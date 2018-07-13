@@ -15,6 +15,8 @@ class Form {
 	public static $defaults = array();
 	
 	public $errors = array();
+	
+	public $redirect_field_data = array();	
 
 	const PREFIX_SEPARATOR = '-';
 
@@ -36,6 +38,197 @@ class Form {
 			}
 		}
 		
+	}
+
+
+	public function init() {
+		
+		$this->submitButtonText = $this->submitButtonText ?: __('Submit', 'svbk-forms');		
+		
+		do_action( 'svbk_forms_init', $this );
+	} 
+	
+	public static function load_texdomain() {
+		load_textdomain( 'svbk-forms', dirname( __DIR__ ) . '/languages/svbk-forms-' . get_locale() . '.mo' );
+	}	
+
+	public function addInputFields( $fields, $key = '', $position = 'after' ) {
+		$this->inputFields = Renderer::arraykeyInsert( $this->inputFields, $fields, $key, $position );
+	}
+
+	public function removeInputFields() {
+		$this->inputFields = array();
+	}
+	
+	public function removeInputField( $field ) {
+		if ( array_key_exists( $field, $this->inputFields ) ) {
+			unset( $this->inputFields[$field] );
+		}
+	}	
+
+	public function insertInputField( $fieldName, $fieldParams, $after = null ) {
+
+		if ( $after ) {
+			$this->inputFields = Renderer::arrayKeyInsert( $this->inputFields, array(
+				$fieldName => $fieldParams,
+			), $after );
+		} else {
+			$this->inputFields[ $fieldName ] = $fieldParams;
+		}
+
+	}
+	
+	public function submitUrl() {
+
+		return home_url(
+			add_query_arg(
+				array(
+					'svbkSubmit' => $this->action,
+				)
+			)
+		);
+
+	}	
+	
+	public function getInput( $field = null ) {
+		
+		if (null === $field){
+			$value = $this->inputData;
+		} else {
+			$value = isset( $this->inputData[ $field ] ) ? $this->inputData[ $field ] : null;
+		}
+		
+		return apply_filters( 'svbk_forms_input_value', $value );
+	}
+
+	protected function getField( $fieldName ) {
+
+		if ( isset( $this->inputFields[ $fieldName ] ) ) {
+			return $this->inputFields[ $fieldName ];
+		} else {
+			return false;
+		}
+
+	}
+
+	protected function validateInput() {
+
+		foreach ( $this->inputFields as $name => $field ) {
+
+			$value = $this->getInput( $name );
+
+			if ( ! $value && $this->fieldRequired( $field ) ) {
+				$this->addError( $this->fieldError( $field, $name ), $name );
+				$this->log( 'debug', 'Form error in field {form}.{field}: {error}', array( 'field' => $name, 'error' => $this->fieldError( $field, $name ) ) ); 
+			}
+		}
+		
+		do_action( 'svbk_forms_validate', $this );
+	}
+	
+	public function processSubmission() {
+
+		$submitAction = filter_input( INPUT_GET, 'svbkSubmit', FILTER_SANITIZE_SPECIAL_CHARS );
+
+		if ( $submitAction !== $this->action ) {
+			return;
+		}
+
+		if( filter_input( INPUT_POST, 'ajax', FILTER_VALIDATE_BOOLEAN ) && ! defined( 'DOING_AJAX' ) ) {
+			define( 'DOING_AJAX', true );
+		}
+
+		$this->log( 'debug', 'Form <{form}> submitted', array( 'input' => $this->getInput() ) ); 
+
+		$this->processInput();
+		$this->validateInput();
+
+		do_action( 'svbk_forms_submit_before', $this );
+
+		if ( empty( $this->errors ) ) {
+			
+			$this->mainAction();
+			
+			do_action( 'svbk_forms_submit_success', $this );
+		}
+		
+		do_action( 'svbk_forms_submit_after', $this );
+		
+		$redirect_to = filter_input( INPUT_POST, $this->fieldName('redirect_to'), FILTER_VALIDATE_INT );
+		$redirect_url = null;
+		
+		if ( $redirect_to ) {
+			$redirect_url = get_permalink( $redirect_to );
+		}
+
+		/**
+		 * Append fields values to redirect url
+		 */
+		
+		if ( $redirect_url && !empty( $this->redirect_field_data ) ) {
+			
+			$redirectFieldData[] = array();
+			
+			foreach( $this->redirect_field_data as $redirect_field ) {
+				$redirectFieldData[$redirect_field] = $this->getInput($redirect_field);
+			}
+			
+			$serializedData = base64_encode( serialize( $redirectFieldData ) );
+		
+			$redirect_url = add_query_arg( 'fdata', $serializedData, $redirect_url );
+		}
+
+		if( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
+			@header( 'Content-Type: application/json' );
+			send_nosniff_header();
+			echo $this->formatResponse( $redirect_url );
+			exit;
+		}
+
+		//self::$form_errors = $errors;
+
+		if( empty( $this->errors ) && $redirect_url ) {
+			wp_redirect( $redirect_url );
+			exit;
+		}		
+	}
+
+	public function formatResponse( $redirect_url = null ) {
+
+		$errors = $this->getErrors();
+
+		if ( ! empty( $errors ) ) {
+
+			return json_encode(
+				array(
+					'prefix' => $this->field_prefix,
+					'status' => 'error',
+					'errors' => $errors,
+				)
+			);
+
+		}
+
+		$response = array(
+			'prefix' => $this->field_prefix,
+			'status' => 'success',
+			'message' => $this->confirmMessage(),
+		);
+		
+		if ( $redirect_url ) {
+			$response['redirect'] = $redirect_url;
+		}
+
+		return apply_filters('svbk_forms_response', json_encode( $response ), $this );
+	}
+
+	public function confirmMessage() {
+		return $this->confirmMessage ?: __( 'Thanks for your request, we will reply as soon as possible.', 'svbk-forms' );
+	}
+
+	protected function mainAction(){ 
+		do_action('svbk_forms_main_action', $this);
 	}
 
 	protected function addError( $error, $field = null ) {
