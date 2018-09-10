@@ -105,7 +105,9 @@
                 this.element.trigger("reset");
                 
                 this.options.submitTimeout = setTimeout( 
-                    this.afterSuccess, 
+                    function(){
+                        self.afterSuccess();
+                    }, 
                     this.options.trackFallbackTimeout
                 );             
                 
