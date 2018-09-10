@@ -267,7 +267,7 @@ class Submission extends Form {
 
 	public function enqueue_scripts() {
 		
-		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.2.7', 'deps' => array( 'jquery', 'jquery-ui-widget' ), 'source_options' => ['source' => 'gh'], 'defer' => true ] );
+		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.2.11', 'deps' => array( 'jquery', 'jquery-ui-widget' ), 'source_options' => ['source' => 'gh'], 'defer' => true ] );
 		wp_add_inline_script( 'silverbackstudio/wp-forms', "(function($){ $('.svbk-form').svbkForm(); })(jQuery);" );
 		
 		if( $this->recaptchaKey ) {
