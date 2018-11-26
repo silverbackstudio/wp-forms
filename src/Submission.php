@@ -2,6 +2,8 @@
 namespace Svbk\WP\Forms;
 
 use Svbk\WP\Helpers;
+use Svbk\WP\Helpers\Assets\Script;
+use Svbk\WP\Helpers\Assets\Style;
 use Svbk\WP\Email;
 
 class Submission extends Form {
@@ -267,12 +269,12 @@ class Submission extends Form {
 
 	public function enqueue_scripts() {
 		
-		Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.2.11', 'deps' => array( 'jquery', 'jquery-ui-widget' ), 'source_options' => ['source' => 'gh'], 'defer' => true ] );
+		Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/forms.js', [ 'version' => '2.2.11', 'deps' => array( 'jquery', 'jquery-ui-widget' ), 'source_options' => ['source' => 'gh'], 'defer' => true ] );
 		wp_add_inline_script( 'silverbackstudio/wp-forms', "(function($){ $('.svbk-form').svbkForm(); })(jQuery);" );
 		
 		if( $this->recaptchaKey ) {
-			Helpers\Theme\Script::enqueue( 'recaptcha-v3', 'https://www.google.com/recaptcha/api.js?render=' . $this->recaptchaKey, [ 'source' => false, 'defer' => true, 'version' => 3 ] );
-			Helpers\Theme\Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/recaptcha.js', [ 
+			Script::enqueue( 'recaptcha-v3', 'https://www.google.com/recaptcha/api.js?render=' . $this->recaptchaKey, [ 'source' => false, 'defer' => true, 'version' => 3 ] );
+			Script::enqueue( 'silverbackstudio/wp-forms', 'assets/js/recaptcha.js', [ 
 				'handle' => 'wp-forms-recaptcha',
 				'version' => '2.2.3', 
 				'deps' => array( 'jquery-ui-widget', 'silverbackstudio/wp-forms', 'recaptcha-v3' ), 
@@ -287,7 +289,7 @@ class Submission extends Form {
 			
 		}
 	
-		Helpers\Theme\Script::enqueue( 'silverbackstudio/utm-form', 'dest/utm_form-1.0.4.min.js', [ 'source_options' => [ 'source' => 'gh'], 'profiling' => true, 'async' => true, 'defer' => true ] );
+		Script::enqueue( 'silverbackstudio/utm-form', 'dest/utm_form-1.0.4.min.js', [ 'source_options' => [ 'source' => 'gh'], 'profiling' => true, 'async' => true, 'defer' => true ] );
 		
 		$utm_forms_params = array_merge( 
 			array(
