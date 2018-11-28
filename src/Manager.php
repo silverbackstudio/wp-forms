@@ -10,7 +10,11 @@ class Manager {
 	
 	public static function create( $id, $class, $properties = array() ){
 		
-		$form = new $class( $properties );
+		$defaults = array(
+			'action' => $id,
+		);
+		
+		$form = new $class( array_merge($defaults, $properties) );
 		
 		self::store( $id, $form );
 			

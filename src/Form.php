@@ -31,6 +31,8 @@ class Form {
 	public $errors = array();
 	
 	public $redirect_field_data = array();	
+	
+	public $hashFields = false;
 
 	const PREFIX_SEPARATOR = '-';
 
@@ -322,15 +324,15 @@ class Form {
 		$this->inputData = apply_filters('svbk_forms_input', $input, $input_filters, $hashed_filters, $hashed_inputs );
 	}
 
-	public function fieldName( $fieldName, $hash = true ) {
+	public function fieldName( $fieldName, $hash = false ) {
 
 		$clearText = $this->index . '_' . $fieldName;
 
-		if ( ! $hash ) {
-			return $this->field_prefix . '_' . $clearText;
+		if ( $this->hashFields || $hash ) {
+			return $this->field_prefix . '_' . wp_create_nonce( $clearText, $this->action );
 		}
 
-		return $this->field_prefix . '_' . wp_create_nonce( $clearText, $this->action );
+		return $this->field_prefix . '_' . $clearText;
 	}
 
 	protected static function fieldRequired( $fieldAttr ) {
