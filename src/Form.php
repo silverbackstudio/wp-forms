@@ -310,18 +310,18 @@ class Form {
 		$inputs = array();
 
 		foreach ( $input_filters as $field => $filter ) {
-			$hashed_field_name = $this->fieldName( $field );
-			$hashed_filters[ $hashed_field_name ] = $filter;
-			$input[ $field ] = $hashed_field_name;
+			$field_name = $this->fieldName( $field );
+			$filters[ $field_name ] = $filter;
+			$input[ $field ] = $field_name;
 		}
 
-		$hashed_inputs = filter_input_array( INPUT_POST, $hashed_filters );
+		$inputs = filter_input_array( INPUT_POST, $filters );
 
-		foreach ( $input as $field => $hashed_field_name ) {
-			$input[ $field ] = $hashed_inputs[ $hashed_field_name ];
+		foreach ( $input as $field => $field_name ) {
+			$input[ $field ] = $inputs[ $field_name ];
 		}
 
-		$this->inputData = apply_filters('svbk_forms_input', $input, $input_filters, $hashed_filters, $hashed_inputs );
+		$this->inputData = apply_filters('svbk_forms_input', $input, $input_filters, $filters, $inputs );
 	}
 
 	public function fieldName( $fieldName, $hash = false ) {
