@@ -11,7 +11,7 @@
         "psr-4": {"Svbk\\WP\\Forms\\": "src/"}
     },   
     "require": {
-        "johnpbloch/wordpress": "^4.9.6",
+        "johnpbloch/wordpress": ">=4.9.6",
         "silverback/wp-helpers": "^5.0.0",
         "silverbackstudio/wp-email": "^1.4.0",
         "psr/log": "^1.0",
