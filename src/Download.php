@@ -39,7 +39,7 @@ class Download extends Subscribe {
 
 		$user = parent::getUser();
 		
-		$user->addAttribute( 'DOWNLOAD', 1 );
+		$user->setAttribute( 'DOWNLOAD', 1 );
 		
 		return $user;
 	}
@@ -48,8 +48,8 @@ class Download extends Subscribe {
 
 		$email = parent::getEmail();
 
-		$email->attributes['DOWNLOAD'] = 1;
-		$email->attributes['DOWNLOAD_URL'] = esc_url( $this->getDownloadLink() );
+		$email->setAttribute('DOWNLOAD', 1);
+		$email->setAttribute('DOWNLOAD_URL', esc_url( $this->getDownloadLink() ) );
 
 		return $email;
 	}
@@ -84,7 +84,7 @@ class Download extends Subscribe {
 			$this->log( 'warning', 'Missing user template for form: {form}' );
 
 			$email = $this->getEmail();
-			$email->to = $this->getUser();
+			$email->addRecipient( $this->getUser() );
 			$email->subject = $this->user_subject ?: __('Download your file', 'svbk-forms');
 			
 			$body = sprintf( __(' Thanks for your request, please download your file <a href="%s">here</a>', 'svbk-forms' ) , $this->getDownloadLink() );
@@ -97,11 +97,12 @@ class Download extends Subscribe {
 				
 				$this->log( 'warning', 'Missing from address for form {form}, using wordpress default' );
 				
-				$email->from = new Email\Contact(
-					[
-						'email' => get_bloginfo( 'admin_email' ),
-						'first_name' => 'Website Admin',
-					]				
+				$email->setFrom(new Email\Contact(
+						[
+							'email' => get_bloginfo( 'admin_email' ),
+							'first_name' => 'Website Admin',
+						]				
+					)
 				);
 			}
 

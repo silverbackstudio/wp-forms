@@ -73,13 +73,13 @@ class Contact extends Subscribe {
 		
 		$email = $this->getEmail();
 		$email->tags = array_merge( $email->tags, $tags, array('admin-email') );
-		$email->to = $this->recipient;
-		$email->reply_to = $this->getUser();
+		$email->addRecipient( $this->recipient );
+		$email->setReplyTo( $this->getUser() );
 		
 		if( $this->admin_template ) {
 	
 			try { 
-				$this->transactional->sendTemplate( apply_filters( 'svbk_forms_admin_email', $email, $this ), $this->admin_template );
+				$this->transactional->sendTemplate( $this->admin_template, apply_filters( 'svbk_forms_admin_email', $email, $this ) );
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
 				$this->log( 'error', 'Error in sending admin email: {error}', array( 'error' => $e->getMessage(), 'template' => $this->admin_template ) );
@@ -93,12 +93,12 @@ class Contact extends Subscribe {
 			$email->html_body = '<p>' . $this->getInput('request') .  '</p>';
 			
 			if( !$email->from ) {
-				$email->from = new Email\Contact(
+				$email->setFrom( new Email\Contact(
 					[
 						'email' => get_bloginfo('admin_email'),
 						'first_name' => 'Website Admin',
 					]				
-				);
+				) );
 			}
 
 			try { 

@@ -70,12 +70,12 @@ class Subscribe extends Submission {
 		if( $this->transactional && $this->user_template ) {
 	
 			$email = $this->getEmail();
-			$email->to = $this->getUser();
+			$email->addRecipient( $this->getUser() );
 			
 			$email->tags = array_merge( $email->tags, $tags, array('user-email') );
 
 			try { 
-				$this->transactional->sendTemplate( apply_filters( 'svbk_forms_user_email', $email, $this ), $this->user_template );
+				$this->transactional->sendTemplate( $this->user_template, apply_filters( 'svbk_forms_user_email', $email, $this ) );
 			} catch( Exception $e ) {
 				$this->addError( $e->getMessage() );
 				$this->log( 'error', 'Error in sending form user email: {error}', array( 'error' => $e->getMessage(), 'template' => $this->user_template ) );
@@ -96,19 +96,19 @@ class Subscribe extends Submission {
 			$user->last_name = ucfirst( $this->getInput( 'lname' ) );
 		}		
 		
-		$user->addAttribute('SVBK_UID', $user->uuid() );
-		$user->addAttribute('LANGUAGE', get_bloginfo('language') );
+		$user->setAttribute('SVBK_UID', $user->uuid() );
+		$user->setAttribute('LANGUAGE', get_bloginfo('language') );
 		
 		$user->lists = $this->marketing_lists;
 
-		$user->addAttribute('OPTIN_NEWSLETTER', 1 );	
-		$user->addAttribute('OPTIN_NEWSLETTER_DATE', $this->marketing->formatDate( new DateTime() ) );
-		$user->addAttribute('OPTIN_NEWSLETTER_IP', sha1( IpAddress::getClientAddress() ) );		
+		$user->setAttribute('OPTIN_NEWSLETTER', 1 );	
+		$user->setAttribute('OPTIN_NEWSLETTER_DATE', $this->marketing->formatDate( new DateTime() ) );
+		$user->setAttribute('OPTIN_NEWSLETTER_IP', sha1( IpAddress::getClientAddress() ) );		
 		
 		if ( $this->checkPolicy('policy_marketing') ) {
-			$user->addAttribute('OPTIN_MARKETING', 1 );	
-			$user->addAttribute('OPTIN_MARKETING_DATE',  $this->marketing->formatDate( new DateTime() ) );
-			$user->addAttribute('OPTIN_MARKETING_IP', IpAddress::getClientAddress() );					
+			$user->setAttribute('OPTIN_MARKETING', 1 );	
+			$user->setAttribute('OPTIN_MARKETING_DATE',  $this->marketing->formatDate( new DateTime() ) );
+			$user->setAttribute('OPTIN_MARKETING_IP', IpAddress::getClientAddress() );					
 		}
 		
 		/**
@@ -133,7 +133,7 @@ class Subscribe extends Submission {
 			$attribution_values = filter_input_array ( INPUT_POST, array_fill_keys( $attribution_form_params, FILTER_SANITIZE_SPECIAL_CHARS ) );
 	
 			foreach( $attribution_values as $attribution_param => $attribution_value ) {
-				$user->addAttribute( $attribution_param, urldecode( $attribution_value ) );
+				$user->setAttribute( $attribution_param, urldecode( $attribution_value ) );
 			}		
 		}
 		
@@ -143,10 +143,10 @@ class Subscribe extends Submission {
 	protected function getEmail(){
 		
 		$email = new Email\Message();
-		$email->attributes = $this->inputData;
+		$email->setAttributes($this->inputData);
 		
 		if( $this->sender ) {
-			$email->from = $this->sender;
+			$email->setFrom( $this->sender );
 		}
 		
 		return $email;
