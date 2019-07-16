@@ -27,6 +27,8 @@
                 this.options.action = this.element.data('formAction');
             }
             
+            this._trigger( 'create', null, {} );
+
             this.options.messages = $(this.options.messagesContainer + ' ul', this.element);
         },
         
